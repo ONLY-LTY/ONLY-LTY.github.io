@@ -3,28 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>spring mvc exception | LTY&#39;s Blog</title>
+  <title>ideavim | LTY&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="keywords" content="SpringMVC" />
   
   
   
-  
-  <meta name="description" content="Spring MVC 全局异常处理">
-<meta name="keywords" content="Spring,MVC">
+  <meta name="description" content="世界那么大、我带你想去看看">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring MVC Exception">
-<meta property="og:url" content="http://lty.com/2016/11/14/Spring-MVC-Exception/index.html">
+<meta property="og:title" content="IdeaVim">
+<meta property="og:url" content="http://lty.com/2018/09/26/IdeaVim/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="Spring MVC 全局异常处理">
+<meta property="og:description" content="世界那么大、我带你想去看看">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://lty.com/img/20161114mvc.jpg">
-<meta property="og:updated_time" content="2018-03-28T07:21:53.473Z">
+<meta property="og:updated_time" content="2018-09-26T09:15:28.849Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Spring MVC Exception">
-<meta name="twitter:description" content="Spring MVC 全局异常处理">
-<meta name="twitter:image" content="http://lty.com/img/20161114mvc.jpg">
+<meta name="twitter:title" content="IdeaVim">
+<meta name="twitter:description" content="世界那么大、我带你想去看看">
   
     <link rel="alternate" href="/atom.xml" title="LTY&#39;s Blog" type="application/atom+xml">
   
@@ -164,25 +159,15 @@
             
       <div id="content" class="outer">
         
-          <section id="main" style="float:none;"><article id="post-Spring-MVC-Exception" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+          <section id="main" style="float:none;"><article id="post-IdeaVim" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
   <div id="articleInner" class="article-inner">
     
-<div class="article-gallery">
-  <div class="article-gallery-photos">
-    
-      <a class="article-gallery-img fancybox" href="/img/20161114mvc.jpg" rel="gallery_cjmixtmxj000wwdqm3cc7jdiy">
-        <img src="/img/20161114mvc.jpg" itemprop="image">
-      </a>
-    
-  </div>
-</div>
-
     
       <header class="article-header">
         
   
     <h1 class="thumb" class="article-title" itemprop="name">
-      Spring MVC Exception
+      IdeaVim
     </h1>
   
 
@@ -190,8 +175,8 @@
     
     <div class="article-meta">
       
-	<a href="/2016/11/14/Spring-MVC-Exception/" class="article-date">
-	  <time datetime="2016-11-14T11:04:09.000Z" itemprop="datePublished">2016-11-14</time>
+	<a href="/2018/09/26/IdeaVim/" class="article-date">
+	  <time datetime="2018-09-26T09:15:28.000Z" itemprop="datePublished">2018-09-26</time>
 	</a>
 
       
@@ -205,13 +190,7 @@
     </div>
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Spring MVC 全局异常处理<br><a id="more"></a></p>
-<p>&emsp;&emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  <span class="keyword">static</span> <span class="keyword">final</span> Log LOGGER = LogFactory.getLog(BaseExceptionHandler.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(NoHandlerFoundException.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.NOT_FOUND)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">handle404Error</span><span class="params">(HttpServletRequest request, Throwable e)</span></span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"@NoHandlerFound Path [&#123;&#125;]  &#123;&#125;"</span>,request.getRequestURI(),e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"400"</span>,e.getMessage(),<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(ServerException.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.INTERNAL_SERVER_ERROR)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">handleError</span><span class="params">(HttpServletRequest request,Throwable e)</span></span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"@Controller Path [&#123;&#125;]  Method [&#123;&#125;]"</span>,request.getRequestURI(),request.getMethod());</span><br><span class="line">        LOGGER.error(<span class="string">"@Error - "</span>,e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"4001"</span>,<span class="string">"处理错误 | 错误原因 "</span>+e.getMessage(),<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value = &#123;MethodArgumentNotValidException.class, BindException.class&#125;)</span><br><span class="line">    <span class="function">ResponseEntity <span class="title">handleMethodArgumentNotValidException</span><span class="params">(HttpServletRequest request, Exception e)</span> </span>&#123;</span><br><span class="line">        String message = <span class="string">"参数异常,"</span>;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> MethodArgumentNotValidException) &#123;</span><br><span class="line">            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;</span><br><span class="line">            message = message + exception.getBindingResult().getFieldError().getDefaultMessage();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> BindException) &#123;</span><br><span class="line">            BindException exception = (BindException) e;</span><br><span class="line">            message = message + exception.getBindingResult().getFieldError().getDefaultMessage();</span><br><span class="line">        &#125;</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Check Argument ErrorMsg:[&#123;&#125;] Path:[&#123;&#125;]"</span>, message, request.getRequestURI());</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Check Argument Error - "</span>, e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"4001"</span>, message, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(Exception.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.INTERNAL_SERVER_ERROR)</span><br><span class="line">    <span class="function">ResponseEntity <span class="title">handleControllerException</span><span class="params">(HttpServletRequest request, Throwable th)</span> </span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Path:[&#123;&#125;]"</span>, request.getRequestURI());</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Error - "</span>, th);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"500"</span>, <span class="string">"操作错误,请稍后再试"</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<hr>
-<p align="center"><font color="blue">没有人不爱惜他的生命，但很少人珍视他的时间。</font></p><p align="right">——梁实秋</p>
-
-<hr>
-
+        
       
     </div>
     <footer class="article-footer">
@@ -256,27 +235,16 @@ var a = new Donate({
 
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
-
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
-    <a href="/2016/11/16/Jvm-Classloader/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">上一篇</strong>
-      <div class="article-nav-title">
-        
-          Jvm Classloader
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/11/14/Reflect-Proxy/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2018/06/01/zk分布式锁/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">Reflect-Proxy</div>
+      <div class="article-nav-title">zk分布式锁</div>
     </a>
   
 </nav>
@@ -351,7 +319,7 @@ var a = new Donate({
 <script>
   var disqus_shortname = 'tingyang';
   
-  var disqus_url = 'http://lty.com/2016/11/14/Spring-MVC-Exception/';
+  var disqus_url = 'http://lty.com/2018/09/26/IdeaVim/';
   
   (function(){
     var dsq = document.createElement('script');
