@@ -1,467 +1,869 @@
 <!DOCTYPE html>
-<html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-  <title>ideavim | LTY&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  
-  <meta name="description" content="IdaeVim 配置文件 .ideavimrc">
+
+
+
+
+  <meta name="description" content="IdeaVim 插件配置文件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IdeaVim">
 <meta property="og:url" content="http://lty.com/2018/09/26/IdeaVim/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="IdaeVim 配置文件 .ideavimrc">
+<meta property="og:description" content="IdeaVim 插件配置文件">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-09-26T09:27:54.907Z">
+<meta property="og:updated_time" content="2018-11-17T04:29:27.248Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IdeaVim">
-<meta name="twitter:description" content="IdaeVim 配置文件 .ideavimrc">
-  
-    <link rel="alternate" href="/atom.xml" title="LTY&#39;s Blog" type="application/atom+xml">
+<meta name="twitter:description" content="IdeaVim 插件配置文件">
+
+
+
+
+
+
+  <link rel="canonical" href="http://lty.com/2018/09/26/IdeaVim/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>IdeaVim | LTY's Blog</title>
   
 
-  
 
-  <link rel="icon" href="https://hexo.io/logo.svg">
-  <link rel="apple-touch-icon" href="/https://hexo.io/logo.svg">
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+  <noscript>
   <style type="text/css">
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
-  <link rel="stylesheet" href="/css/style.css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css" >
-
-  
-    <link rel="stylesheet" href="/css/dialog.css">
-  
-
-  
-
-  
-    <link rel="stylesheet" href="/css/header-post.css" >
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css" >
-  
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
 </head>
 
 
-
-  <body data-spy="scroll" data-target="#toc" data-offset="50">
-
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
-  <div id="container">
-    <div id="wrap">
-      
-        <header>
+    
+  
 
-    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="navbar-inner">
-          
-          <div class="container"> 
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
 
-            
-              <a class="brand" style="
-                 margin-top: 0px;"  
-                href="#" data-toggle="modal" data-target="#myModal" >
-                  <img width="124px" height="124px" alt="Hike News" src="https://hexo.io/logo.svg">
-              </a>
-            
-            
-            <div class="navbar-collapse collapse">
-              <ul class="hnav navbar-nav">
-                
-                  <li> <a class="main-nav-link" href="/">首页</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/archives">归档</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/categories">分类</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/tags">标签</a> </li>
-                
-                  <li> <a class="main-nav-link" href="/about">关于</a> </li>
-                
-                  <li><div id="search-form-wrap">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="请输入关键词..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LTY's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+    
+      
+        <p class="site-subtitle">庭洋的博客</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '页面',
-            CATEGORIES: '分类',
-            TAGS: '标签',
-            UNTITLED: '(无标题)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
-
-</div></li>
-            </div>
-          </div>
-                
-      </div>
-    </div>
-
-</header>
 
 
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
 
       
-            
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;"><article id="post-IdeaVim" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" class="article-title" itemprop="name">
-      IdeaVim
-    </h1>
+      
+    </ul>
   
 
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/09/26/IdeaVim/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">IdeaVim
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-09-26 17:15:28" itemprop="dateCreated datePublished" datetime="2018-09-26T17:15:28+08:00">2018-09-26</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-11-17 12:29:27" itemprop="dateModified" datetime="2018-11-17T12:29:27+08:00">2018-11-17</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
       </header>
     
-    <div class="article-meta">
-      
-	<a href="/2018/09/26/IdeaVim/" class="article-date">
-	  <time datetime="2018-09-26T09:15:28.000Z" itemprop="datePublished">2018-09-26</time>
-	</a>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
       
-	<a class="article-views">
-	<span id="busuanzi_container_page_pv">
-		阅读量<span id="busuanzi_value_page_pv"></span>
-	</span>
-	</a>
 
-    </div>
-    <div class="article-entry" itemprop="articleBody">
       
-        <p>IdaeVim 配置文件 .ideavimrc<br><a id="more"></a></p>
+        <p>IdeaVim 插件配置文件<br><a id="more"></a></p>
 <h5 id="IdaeVim-配置文件-ideavimrc"><a href="#IdaeVim-配置文件-ideavimrc" class="headerlink" title="IdaeVim 配置文件 .ideavimrc"></a>IdaeVim 配置文件 .ideavimrc</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">let mapleader=<span class="string">' '</span></span><br><span class="line">set hlsearch</span><br><span class="line">set incsearch</span><br><span class="line">set ignorecase</span><br><span class="line">set smartcase</span><br><span class="line">set showmode</span><br><span class="line">set number</span><br><span class="line">set scrolloff=<span class="number">8</span></span><br><span class="line">set history=<span class="number">100000</span></span><br><span class="line">set clipboard=unnamed</span><br><span class="line"></span><br><span class="line"><span class="string">" clear the highlighted search result</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;sc :nohlsearch&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;fs :w&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Quit normal mode</span><br><span class="line">nnoremap &lt;Leader&gt;q  :q&lt;CR&gt;</span><br><span class="line">nnoremap &lt;Leader&gt;Q  :qa!&lt;CR&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">" Move half page faster</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Insert mode shortcut</span><br><span class="line">inoremap &lt;C-h&gt; &lt;Left&gt;</span><br><span class="line">inoremap &lt;C-j&gt; &lt;Down&gt;</span><br><span class="line">inoremap &lt;C-k&gt; &lt;Up&gt;</span><br><span class="line">inoremap &lt;C-l&gt; &lt;Right&gt;</span><br><span class="line">inoremap &lt;C-a&gt; &lt;Home&gt;</span><br><span class="line">inoremap &lt;C-e&gt; &lt;End&gt;</span><br><span class="line">inoremap &lt;C-d&gt; &lt;Delete&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">" Quit insert mode</span></span><br><span class="line"><span class="string">inoremap jj &lt;Esc&gt;</span></span><br><span class="line"><span class="string">inoremap jk &lt;Esc&gt;</span></span><br><span class="line"><span class="string">inoremap kk &lt;Esc&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Quit visual mode</span><br><span class="line">vnoremap v &lt;Esc&gt;</span><br><span class="line"></span><br><span class="line"><span class="string">" Move to the start of line</span></span><br><span class="line"><span class="string">nnoremap H ^</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Move to the end of line</span><br><span class="line">nnoremap L $</span><br><span class="line"></span><br><span class="line"><span class="string">" Redo</span></span><br><span class="line"><span class="string">nnoremap U &lt;C-r&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Yank to the end of line</span><br><span class="line">nnoremap Y y$</span><br><span class="line"></span><br><span class="line"><span class="string">" Window operation</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;ww &lt;C-W&gt;w</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wd &lt;C-W&gt;c</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wj &lt;C-W&gt;j</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wk &lt;C-W&gt;k</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wh &lt;C-W&gt;h</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wl &lt;C-W&gt;l</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;ws &lt;C-W&gt;s</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;w- &lt;C-W&gt;s</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;wv &lt;C-W&gt;v</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;w\| &lt;C-W&gt;v</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> Tab operation</span><br><span class="line">nnoremap tn gt</span><br><span class="line">nnoremap tp gT</span><br><span class="line"></span><br><span class="line"><span class="string">" ==================================================</span></span><br><span class="line"><span class="string">"</span> Show all the provided actions via `:actionlist`</span><br><span class="line"><span class="string">" ==================================================</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">"</span> built in search looks better</span><br><span class="line">nnoremap / :action Find&lt;CR&gt;</span><br><span class="line"><span class="string">" but preserve ideavim search</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;/ /</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;;; :action CommentByLineComment&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;bb :action ToggleLineBreakpoint&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;br :action ViewBreakpoints&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap cv :action ChangeView&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;cd :action ChooseDebugConfiguration&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap ga :action GotoAction&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gc :action GotoClass&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gd :action GotoDeclaration&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gf :action GotoFile&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gi :action GotoImplementation&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gs :action GotoSymbol&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gt :action GotoTest&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap go :action OptimizeImports&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap fp :action ShowFilePath&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap fu :action FindUsages&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap mv :action ActivateMavenProjectsToolWindow&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap rc :action ChooseRunConfiguration&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap re :action RenameElement&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap rf :action RenameFile&lt;CR&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">nnoremap se :action FindInPath&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap su :action ShowUsages&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gb :action Back&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap gn :action Generate&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;tc  :action CloseActiveTab&lt;CR&gt;</span></span><br><span class="line"><span class="string">nnoremap &lt;Leader&gt;tl Vy&lt;CR&gt;:action ActivateTerminalToolWindow&lt;CR&gt;</span></span><br><span class="line"><span class="string">vnoremap &lt;Leader&gt;tl y&lt;CR&gt;:action ActivateTerminalToolWindow&lt;CR&gt;</span></span><br></pre></td></tr></table></figure>
 <h5 id="VIM-配置文件"><a href="#VIM-配置文件" class="headerlink" title="VIM 配置文件"></a>VIM 配置文件</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">" Configuration file for vim</span></span><br><span class="line"><span class="string">set modelines=0		"</span> CVE-<span class="number">2007</span>-<span class="number">2438</span></span><br><span class="line"></span><br><span class="line"><span class="string">" Normally we use vim-extensions. If you want true vi-compatibility</span></span><br><span class="line"><span class="string">"</span> remove change the following statements</span><br><span class="line">set nocompatible	<span class="string">" Use Vim defaults instead of 100% vi compatibility</span></span><br><span class="line"><span class="string">set backspace=2		"</span> more powerful backspacing</span><br><span class="line"></span><br><span class="line"><span class="string">" Don't write backup file if vim is being called by "</span>crontab -e<span class="string">"</span></span><br><span class="line"><span class="string">au BufWrite /private/tmp/crontab.* set nowritebackup nobackup</span></span><br><span class="line"><span class="string">"</span> Don<span class="string">'t write backup file if vim is being called by "chpass"</span></span><br><span class="line"><span class="string">au BufWrite /private/etc/pw.* set nowritebackup nobackup</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">let skip_defaults_vim=1</span></span><br><span class="line"><span class="string">set nu</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set shortmess=atI</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">syntax on</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">inoremap jj &lt;Esc&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">noremap H ^</span></span><br><span class="line"><span class="string">noremap L $</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set clipboard=unnamed</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set scrolloff=5</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set nocompatible</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set nobackup</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set confirm</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set mouse=a</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set tabstop=4</span></span><br><span class="line"><span class="string">set shiftwidth=4</span></span><br><span class="line"><span class="string">set expandtab</span></span><br><span class="line"><span class="string">set smarttab</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set autoread</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set cindent</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set autoindent</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set smartindent</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set cursorline</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set hlsearch</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set background=dark</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set showmatch</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set ruler</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set nocompatible</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set fdm=syntax</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set fdm=manual</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set novisualbell</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set laststatus=2</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">autocmd InsertLeave * se nocul</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">autocmd InsertEnter * se cul</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set showcmd</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set fillchars=vert:/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set fillchars=stl:/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">set fillchars=stlnc:/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">if $TERM_PROGRAM =~ "iTerm"</span></span><br><span class="line"><span class="string">let &amp;t_SI = "\&lt;Esc&gt;]50;CursorShape=1\x7" " Vertical bar in insert mode</span></span><br><span class="line"><span class="string">let &amp;t_EI = "\&lt;Esc&gt;]50;CursorShape=0\x7" " Block in normal mode</span></span><br><span class="line"><span class="string">endif</span></span><br></pre></td></tr></table></figure>
 
       
     </div>
-    <footer class="article-footer">
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div></div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://only-lty.github.io/img/weixin.png" alt="像个孩子壹洋 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="https://only-lty.github.io/img/zhifubao.jpg" alt="像个孩子壹洋 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
       
-        <div id="donation_div"></div>
 
-<script src="/js/vdonate.js"></script>
-<script>
-var a = new Donate({
-  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
-  btnText: '打赏支持', // 可选参数，打赏按钮文字
-  el: document.getElementById('donation_div'),
-  wechatImage: 'https://only-lty.github.io/img/weixin.png',
-  alipayImage: 'https://only-lty.github.io/img/zhifubao.jpg'
-});
-</script>
       
       
-        
-	<div id="comment">
-		<!-- 来必力City版安装代码 -->
-		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
-		<script type="text/javascript">
-		   (function(d, s) {
-		       var j, e = d.getElementsByTagName(s)[0];
+      
 
-		       if (typeof LivereTower === 'function') { return; }
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/01/zk分布式锁/" rel="next" title="zk分布式锁">
+                <i class="fa fa-chevron-left"></i> zk分布式锁
+              </a>
+            
+          </div>
 
-		       j = d.createElement(s);
-		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-		       j.async = true;
+          <span class="post-nav-divider"></span>
 
-		       e.parentNode.insertBefore(j, e);
-		   })(document, 'script');
-		</script>
-		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
-		</div>
-		<!-- City版安装代码已完成 -->
-	</div>
-
-
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
 
       
       
     </footer>
   </div>
   
-    
-<nav id="article-nav">
   
   
-    <a href="/2018/06/01/zk分布式锁/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">下一篇</strong>
-      <div class="article-nav-title">zk分布式锁</div>
-    </a>
-  
-</nav>
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
 
   
-</article>
 
-<!-- Table of Contents -->
 
-  <aside id="toc-sidebar">
-    <div id="toc" class="toc-article">
-    <strong class="toc-title">文章目录</strong>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
     
-        <ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#IdaeVim-配置文件-ideavimrc"><span class="nav-number">1.</span> <span class="nav-text">IdaeVim 配置文件 .ideavimrc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VIM-配置文件"><span class="nav-number">2.</span> <span class="nav-text">VIM 配置文件</span></a></li></ol>
-    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/timg.jpeg"
+                alt="像个孩子壹洋" />
+            
+              <p class="site-author-name" itemprop="name">像个孩子壹洋</p>
+              <p class="site-description motion-element" itemprop="description">世界那么大、我带你想去看看</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#IdaeVim-配置文件-ideavimrc"><span class="nav-number">1.</span> <span class="nav-text">IdaeVim 配置文件 .ideavimrc</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#VIM-配置文件"><span class="nav-number">2.</span> <span class="nav-text">VIM 配置文件</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
     </div>
   </aside>
-</section>
+
+
         
       </div>
-      
-      <footer id="footer">
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">像个孩子壹洋</span>
+
   
 
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 LTY&#39;s Blog All Rights Reserved.</p>
-	      
-	      
-    		<p class="busuanzi_uv">
-				访客数 : <span id="busuanzi_value_site_uv"></span> |  
-				访问量 : <span id="busuanzi_value_site_pv"></span>
-		    </p>
-  		   
-		</div>
-
-		
-  </div>
-</footer>
-
-
-<!-- min height -->
-
-<script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    }
-</script>
-    </div>
-    <!-- <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-</nav> -->
-    
-<script>
-  var disqus_shortname = 'tingyang';
-  
-  var disqus_url = 'http://lty.com/2018/09/26/IdeaVim/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-
-
-  <script src="/js/dialog.js"></script>
-
-
-
-
-
-
-
-
-	<div style="display: none;">
-    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
-  </div>
-
-
-
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-	</script>
-
-
-
-
-
-
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
-        </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
-        </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            LTY&#39;s Blog
-          </div>
-          <div class="panel-body">
-            Copyright © 2018 像个孩子壹洋 All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
-    </div>
-  </div>
 </div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.6.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
   
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
+    
+      
+  
+  <script type="text/javascript" color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
 </body>
 </html>

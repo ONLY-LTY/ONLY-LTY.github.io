@@ -1,14 +1,112 @@
 <!DOCTYPE html>
-<html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+<html class="theme-next mist use-motion" lang="zh-CN">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
   
-  <title>LTY&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-  
-  
+
+
+
+
   <meta name="description" content="世界那么大、我带你想去看看">
 <meta property="og:type" content="website">
 <meta property="og:title" content="LTY&#39;s Blog">
@@ -19,738 +117,1589 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LTY&#39;s Blog">
 <meta name="twitter:description" content="世界那么大、我带你想去看看">
-  
-    <link rel="alternate" href="/atom.xml" title="LTY&#39;s Blog" type="application/atom+xml">
+
+
+
+
+
+
+  <link rel="canonical" href="http://lty.com/page/3/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>LTY's Blog</title>
   
 
-  
 
-  <link rel="icon" href="https://hexo.io/logo.svg">
-  <link rel="apple-touch-icon" href="/https://hexo.io/logo.svg">
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
-  <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+
+
+
+
+  <noscript>
   <style type="text/css">
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
-    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
-  <link rel="stylesheet" href="/css/style.css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
 
-  <script src="/js/jquery-3.1.1.min.js"></script>
-  <script src="/js/bootstrap.js"></script>
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
 
-  <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="/css/bootstrap.css" >
-
-  
-    <link rel="stylesheet" href="/css/home.css" >
-  
-
-  
-
-  
-
-  
-  
-  
-    <link rel="stylesheet" href="/css/vdonate.css" >
-  
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
 
 </head>
 
 
-
-  <body>
-
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
 
   
-    <header id="header">
-
-	<!-- 背景图模式 -->
-	
-
     
-      <div id="intrologo" class="intro-logo" style="background-position:center; background-repeat:no-repeat; background-image: url(); background-size: auto 100%;">
+  
 
-      <!-- Support rolling -->  
-        
-        <section class="awSlider">
-          <div class="carousel slide carousel-fade " data-ride="carousel">
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
 
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner">
-               
-                  
-                    <div class="item active">
-                  
-                    <img id="carousel-img0" src="/css/images/home-bg.jpg">
-                  </div>
-
-                  <!-- 自适应大图 -->
-                  <script>
-                      var img0 = new Image();
-                      var imageTag0 = document.getElementById("carousel-img0");
-                      img0.src = imageTag0.src;
-                      img0.onload=function(){
-                        if (img0.width / img0.height <= document.body.clientWidth / document.body.clientHeight) {
-                          imageTag0.style.width = document.body.clientWidth + "px";
-                        } else {
-                          imageTag0.style.height = document.body.clientHeight + "px";
-                          imageTag0.style.marginLeft = -(document.body.clientHeight * img0.width / img0.height - document.body.clientWidth) / 2 + "px";
-                        }
-                      };
-                  </script>
-                
-                  
-                    <div class="item">
-                  
-                    <img id="carousel-img1" src="/css/images/sample.jpg">
-                  </div>
-
-                  <!-- 自适应大图 -->
-                  <script>
-                      var img1 = new Image();
-                      var imageTag1 = document.getElementById("carousel-img1");
-                      img1.src = imageTag1.src;
-                      img1.onload=function(){
-                        if (img1.width / img1.height <= document.body.clientWidth / document.body.clientHeight) {
-                          imageTag1.style.width = document.body.clientWidth + "px";
-                        } else {
-                          imageTag1.style.height = document.body.clientHeight + "px";
-                          imageTag1.style.marginLeft = -(document.body.clientHeight * img1.width / img1.height - document.body.clientWidth) / 2 + "px";
-                        }
-                      };
-                  </script>
-                
-                  
-                    <div class="item">
-                  
-                    <img id="carousel-img2" src="https://source.unsplash.com/collection/954550/1920x1080">
-                  </div>
-
-                  <!-- 自适应大图 -->
-                  <script>
-                      var img2 = new Image();
-                      var imageTag2 = document.getElementById("carousel-img2");
-                      img2.src = imageTag2.src;
-                      img2.onload=function(){
-                        if (img2.width / img2.height <= document.body.clientWidth / document.body.clientHeight) {
-                          imageTag2.style.width = document.body.clientWidth + "px";
-                        } else {
-                          imageTag2.style.height = document.body.clientHeight + "px";
-                          imageTag2.style.marginLeft = -(document.body.clientHeight * img2.width / img2.height - document.body.clientWidth) / 2 + "px";
-                        }
-                      };
-                  </script>
-                
-            </div>
-
-            <!-- Controls -->
-            <a class="left carousel-control" href=".carousel" role="button" data-slide="prev">
-              <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-              <span class="sr-only">Geri</span>
-            </a>
-            <a class="right carousel-control" href=".carousel" role="button" data-slide="next">
-              <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-              <span class="sr-only">İleri</span>
-            </a>
-          </div>
-        </section>
-        <script>
-          $('section.awSlider .carousel').carousel({
-              pause: '',
-              interval: 5000
-          });
-          var startImage = $('section.awSlider .item.active > img').attr('src');
-          $('section.awSlider .carousel').on('slid.bs.carousel', function () {
-              var bscn = $(this).find('.item.active > img').attr('src');
-              $('section.awSlider > img').attr('src', bscn);
-          });
-        </script>
-      
-
-    
- 
-
-
-    <canvas width="100%" height="100%"></canvas>
-    <script>
-      var c = document.getElementsByTagName('canvas')[0],
-          x = c.getContext('2d'),
-          w = window.innerWidth,
-          h = window.innerHeight,
-          pr = window.devicePixelRatio || 1,
-          f = 90,
-          q,
-          m = Math,
-          r = 0,
-          u = m.PI*2,
-          v = m.cos,
-          z = m.random
-      c.width = w*pr
-      c.height = h*pr
-      x.scale(pr, pr)
-      x.globalAlpha = 0.6
-
-      <!-- 折线Polyline背景 -->
-      
-    </script>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
     
 
-    
-      <div id="homelogo" class="homelogo" style="background: rgba(255,255,255,1);"> 
-    
-
-        
-          <div class="homelogoback"  style="border: 1px solid #404040;" >
-            <h1><a href="#content" id="logo">LTY&#39;s Blog</a></h1>
-            <h3>世界那么大、我带你想去看看</h3>
-            <h5>像个孩子壹洋</h5>
-            <!-- <p><a href="https://github.com/iTimeTraveler" target="_blank">Github</a></p> -->
-          </div>
-        
-    
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">LTY's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
     </div>
+    
+      
+        <p class="site-subtitle">庭洋的博客</p>
+      
+    
   </div>
 
-  <!-- 自适应主页背景大图 -->
-  
-
- <!-- home_logo_image居中 -->
- 
-    <script>
-        var homelogodiv = document.getElementById("homelogo");
-        if (document.all.homelogo.offsetWidth > document.body.clientWidth) {
-          homelogodiv.style.width = document.body.clientWidth + "px";
-          homelogodiv.style.marginLeft = document.body.clientWidth * -0.5 + "px";
-        } else {
-          homelogodiv.style.width = homelogodiv.clientWidth  + "px";
-          homelogodiv.style.marginLeft = (homelogodiv.clientWidth)  * -0.5 + "px";
-        }
-    </script>
-  
-
-  <div class="intro-navigate">
-      <p class="navigater-list">
-        
-          <a id="beautifont" class="main-nav-link" href="/">首页</a>
-        
-          <a id="beautifont" class="main-nav-link" href="/archives">归档</a>
-        
-          <a id="beautifont" class="main-nav-link" href="/categories">分类</a>
-        
-          <a id="beautifont" class="main-nav-link" href="/tags">标签</a>
-        
-          <a id="beautifont" class="main-nav-link" href="/about">关于</a>
-        
-      </p>
-  </div>
-
-</header>
-  
-  <div id="container">
-    <div id="wrap">
-      
-            
-      <div id="content" class="outer">
-        
-          <section id="main" style="float:none;">
-  
-    <article id="post-Jvm-Classloader"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/16/Jvm-Classloader/">Jvm Classloader</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/16/Jvm-Classloader/" class="article-date">
-	  <time datetime="2016-11-16T03:54:41.000Z" itemprop="datePublished">2016-11-16</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java 类加载机制<br>
-        <!-- Java 类加载机制
-说在前面的话&emsp;&emsp;JVM的相关知识很多,其实主要我们在平时接触到就三个部分一个是内存模型，一个是类加载，在一个就是垃圾回收，要看具体的内容可以去看《深入理解Java虚拟机》这本书,慢慢品味会有不少的收获，记得自己刚开始面试那会前面几章看了好多遍，奈何当时只是应付面试,里面好多东西都不是很理解,现在在来复习一下说说自己的见解。
-&emsp;&emsp;谈......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/16/Jvm-Classloader/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Classloader/">Classloader</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Jvm/">Jvm</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Spring-MVC-Exception"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/14/Spring-MVC-Exception/">Spring MVC Exception</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/14/Spring-MVC-Exception/" class="article-date">
-	  <time datetime="2016-11-14T11:04:09.000Z" itemprop="datePublished">2016-11-14</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring MVC 全局异常处理<br>
-        <!-- Spring MVC 全局异常处理
-&emsp;&emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。123456789101112131415161718192021222324252627282930313233343536373839404142public class Base......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/14/Spring-MVC-Exception/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Spring/">Spring</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Reflect-Proxy"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/14/Reflect-Proxy/">Reflect-Proxy</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/14/Reflect-Proxy/" class="article-date">
-	  <time datetime="2016-11-14T10:22:59.000Z" itemprop="datePublished">2016-11-14</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>反射和动态代理<br>
-        <!-- 反射和动态代理
-
-反射在java中是一个高级特性。它的用处很广泛，通过反射API可以获取程序在运行时刻的内部结构。本文不对反射基本API做详细的讲解。主要讲解反射在动态代理中应用。
-
-动态代理和静态代理
-代理 : 为某个对象提供一个代理，以控制对这个对象的访问。 代理类和委托类有共同的父类或父接口，这样在任何使用委托类对象的地方都可以用代理对象替代。代理类负责请求的预处理、过滤、将请求分派给......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/14/Reflect-Proxy/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态代理/">动态代理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/反射/">反射</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-Serializable"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/14/Serializable/">Serializable</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/14/Serializable/" class="article-date">
-	  <time datetime="2016-11-14T03:31:49.000Z" itemprop="datePublished">2016-11-14</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Java序列化<br>
-        <!-- Java序列化
-&emsp;&emsp;最近在Rpc的一些内容，主要的序列化和传输两个模块挺重要的，然后详细的去了解了一些序列化的知识，也当复习下。
-Java序列化&emsp;&emsp;Java的序列化很简单，只需要实现Serializable接口，然后就可以用ObjectInpuStream、ObjectOutputSteam进行序列化和反序列化了。下面简单演示一下。1234567891......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/14/Serializable/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/序列化/">序列化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-cross-domain"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/09/cross-domain/">Cross Domin</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/09/cross-domain/" class="article-date">
-	  <time datetime="2016-11-09T06:10:10.000Z" itemprop="datePublished">2016-11-09</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一次跨域之旅<br>
-        <!-- 一次跨域之旅
-&emsp;&emsp;小洋前几天帮同学写了一个短信验证码的H5页面，应对他的奇葩需求，小洋在页面里面用Jquery直接调用的第三方的发短信的接口。当点击发送的时候，发现jQuery进入的是Error，但是一看手机已经收到验证码了。小洋也是相当的郁闷。然后F12一番，跨域了。小洋闭目三思，本地ajax请求第三方肯定跨域了，可是收到验证码了说明请求成功了啊。小洋以前有需求的时候戏......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/09/cross-domain/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跨域/">跨域</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-    <article id="post-JOOQ-start"  class="article article-type-post" itemscope itemprop="blogPost" >
-  <div id="articleInner" class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="thumb" itemprop="name">
-      <a class="article-title" href="/2016/11/07/JOOQ-start/">JOOQ Start</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-meta">
-      
-	<a href="/2016/11/07/JOOQ-start/" class="article-date">
-	  <time datetime="2016-11-07T09:16:03.000Z" itemprop="datePublished">2016-11-07</time>
-	</a>
-
-      
-      
-    </div>
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>JOOQ 开始<br>
-        <!-- JOOQ 开始
-毕业以后进入的公司数据库持久层用的JOOQ，流式的API敲起来很爽。这里记录一下。具体的用法可以直接查看官网文档 http://www.jooq.org/
-Code Generation  JOOQ是根据数据库自动生成的表对象。这里我们使用maven的插件来生成。官方的maven配置 http://www.jooq.org/doc/3.8/manual-single-page......  -->
-        <p class="article-more-link">
-          <a href="/2016/11/07/JOOQ-start/#more">阅读全文</a>
-        </p>
-      
-    </div>
-    <footer class="article-footer">
-      
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JOOQ/">JOOQ</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-<!-- Table of Contents -->
-
-  
-
-
-  <nav id="page-nav">
-    
-    <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
-  </nav>
-
-</section>
-        
-      </div>
-      
-        <div align="center" style="margin-top: 30px;"><hr class="hr" style="margin:0px; height:3px;"></div>
-      
-      <footer id="footer">
-  
-
-  <div class="container">
-      	<div class="row">
-	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
-	      <p id="copyRightEn">Copyright &copy; 2013 - 2018 LTY&#39;s Blog All Rights Reserved.</p>
-	      
-	      
-    		<p class="busuanzi_uv">
-				访客数 : <span id="busuanzi_value_site_uv"></span> |  
-				访问量 : <span id="busuanzi_value_site_pv"></span>
-		    </p>
-  		   
-		</div>
-
-		
-  </div>
-</footer>
-
-
-<!-- min height -->
-
-<script>
-    var wrapdiv = document.getElementById("wrap");
-    var contentdiv = document.getElementById("content");
-    var allheader = document.getElementById("allheader");
-
-    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
-    if (allheader != null) {
-      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    } else {
-      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
-    }
-</script>
-    </div>
-    <!-- <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-    <a href="/categories" class="mobile-nav-link">Categories</a>
-  
-    <a href="/tags" class="mobile-nav-link">Tags</a>
-  
-    <a href="/about" class="mobile-nav-link">About</a>
-  
-</nav> -->
-    
-<script>
-  var disqus_shortname = 'tingyang';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
-
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
-
-
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
-
-
-<script src="/js/scripts.js"></script>
-
-
-  <script src="/js/home.js"></script>
-
-
-
-
-
-
-
-
-
-
-	<div style="display: none;">
-    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
-  </div>
-
-
-
-	<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
-	</script>
-
-
-
-
-
-
-  </div>
-
-  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="myModalLabel">设置</h2>
-      </div>
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-
-
-      <div class="modal-body">
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
-              正文字号大小
-            </a>
-          </div>
-          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            您已调整页面字体大小
-          </div>
-        </div>
-      
-
-
-          <div style="margin:6px;">
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
-              夜间护眼模式
-            </a>
-        </div>
-          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-          <div class="panel-body">
-            夜间模式已经开启，再次单击按钮即可关闭 
-          </div>
-        </div>
-
-        <div>
-            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-        </div>
-         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-          <div class="panel-body">
-            LTY&#39;s Blog
-          </div>
-          <div class="panel-body">
-            Copyright © 2018 像个孩子壹洋 All Rights Reserved.
-          </div>
-        </div>
-      </div>
-
-
-      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
-      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
-      <div class="modal-footer">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-      </div>
-    </div>
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
   </div>
 </div>
+
+
+
+<nav class="site-nav">
   
-  <a id="rocket" href="#top" class=""></a>
-  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/16/Jvm-Classloader/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/16/Jvm-Classloader/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">Jvm Classloader</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-16 11:54:41" itemprop="dateCreated datePublished" datetime="2016-11-16T11:54:41+08:00">2016-11-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161116a.jpg" rel="gallery_cjol5ur42000cyvqma41baevq"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161116a.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>Java 类加载机制<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/16/Jvm-Classloader/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/14/Spring-MVC-Exception/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/14/Spring-MVC-Exception/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">Spring MVC Exception</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-14 19:04:09" itemprop="dateCreated datePublished" datetime="2016-11-14T19:04:09+08:00">2016-11-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161114mvc.jpg" rel="gallery_cjol5ur4e000vyvqmki9elytc"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161114mvc.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>Spring MVC 全局异常处理<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/14/Spring-MVC-Exception/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/14/Reflect-Proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/14/Reflect-Proxy/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">Reflect-Proxy</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-14 18:22:59" itemprop="dateCreated datePublished" datetime="2016-11-14T18:22:59+08:00">2016-11-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161114reflect.jpg" rel="gallery_cjol5ur4c000ryvqmwceos7wf"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161114reflect.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>反射和动态代理<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/14/Reflect-Proxy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/14/Serializable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/14/Serializable/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">Serializable</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-14 11:31:49" itemprop="dateCreated datePublished" datetime="2016-11-14T11:31:49+08:00">2016-11-14</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161115.jpg" rel="gallery_cjol5ur4d000tyvqm6p2d5y3m"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161115.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>Java序列化<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/14/Serializable/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/09/cross-domain/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/09/cross-domain/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">Cross Domin</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-09 14:10:10" itemprop="dateCreated datePublished" datetime="2016-11-09T14:10:10+08:00">2016-11-09</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161114.jpeg" rel="gallery_cjol5ur4h0010yvqm70to0tk8"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161114.jpeg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>一次跨域之旅<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/09/cross-domain/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2016/11/07/JOOQ-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2016/11/07/JOOQ-start/" class="post-title-link" itemprop="http://lty.com/page/3/index.html">JOOQ Start</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2016-11-07 17:16:03" itemprop="dateCreated datePublished" datetime="2016-11-07T17:16:03+08:00">2016-11-07</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/20161107.jpg" rel="gallery_cjol5ur3q0003yvqmryeyjgai"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/20161107.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        
+          <p>JOOQ 开始<br>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2016/11/07/JOOQ-start/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+  </nav>
+
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/timg.jpeg"
+                alt="像个孩子壹洋" />
+            
+              <p class="site-author-name" itemprop="name">像个孩子壹洋</p>
+              <p class="site-description motion-element" itemprop="description">世界那么大、我带你想去看看</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">26</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">像个孩子壹洋</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.6.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> v6.5.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+      
+  
+  <script type="text/javascript" color='0,0,255' opacity='0.5' zIndex='-1' count='99' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
   
 </body>
 </html>
