@@ -107,31 +107,25 @@
 
 
 
-  <meta name="description" content="Redis 分布式路由中间件">
-<meta name="keywords" content="分布式,Redis">
+  <meta name="description" content="JVM CMS垃圾回收器探索">
+<meta name="keywords" content="JVM,GC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 分布式存储">
-<meta property="og:url" content="http://lty.com/2018/05/29/redis-store/index.html">
+<meta property="og:title" content="垃圾回收器之CMS">
+<meta property="og:url" content="http://lty.com/2018/11/17/CMS/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="Redis 分布式路由中间件">
+<meta property="og:description" content="JVM CMS垃圾回收器探索">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://lty.com/img/Redis分布式.png">
-<meta property="og:image" content="http://lty.com/img/zknode.png">
-<meta property="og:image" content="http://lty.com/img/uml.png">
-<meta property="og:image" content="http://lty.com/img/flow.png">
-<meta property="og:image" content="http://lty.com/img/rehash.png">
-<meta property="og:updated_time" content="2018-06-04T08:28:04.636Z">
+<meta property="og:updated_time" content="2018-11-21T09:57:13.311Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis 分布式存储">
-<meta name="twitter:description" content="Redis 分布式路由中间件">
-<meta name="twitter:image" content="http://lty.com/img/Redis分布式.png">
+<meta name="twitter:title" content="垃圾回收器之CMS">
+<meta name="twitter:description" content="JVM CMS垃圾回收器探索">
 
 
 
 
 
 
-  <link rel="canonical" href="http://lty.com/2018/05/29/redis-store/"/>
+  <link rel="canonical" href="http://lty.com/2018/11/17/CMS/"/>
 
 
 
@@ -141,7 +135,7 @@
   };
 </script>
 
-  <title>Redis 分布式存储 | LTY's Blog</title>
+  <title>垃圾回收器之CMS | LTY's Blog</title>
   
 
 
@@ -344,7 +338,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/05/29/redis-store/">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/11/17/CMS/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="像个孩子壹洋">
@@ -361,7 +355,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis 分布式存储
+          <h1 class="post-title" itemprop="name headline">垃圾回收器之CMS
               
             
           </h1>
@@ -387,7 +381,7 @@
                 
               
 
-              <time title="创建时间：2018-05-29 12:18:36" itemprop="dateCreated datePublished" datetime="2018-05-29T12:18:36+08:00">2018-05-29</time>
+              <time title="创建时间：2018-11-17 18:19:18" itemprop="dateCreated datePublished" datetime="2018-11-17T18:19:18+08:00">2018-11-17</time>
             
 
             
@@ -404,7 +398,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-06-04 16:28:04" itemprop="dateModified" datetime="2018-06-04T16:28:04+08:00">2018-06-04</time>
+                <time title="修改时间：2018-11-21 17:57:13" itemprop="dateModified" datetime="2018-11-21T17:57:13+08:00">2018-11-21</time>
               
             
           </span>
@@ -437,36 +431,26 @@
       
 
       
-        <p>Redis 分布式路由中间件<br><a id="more"></a></p>
-<p>入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。</p>
-<p>先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）</p>
-<p><img src="/img/Redis分布式.png" alt=""></p>
-<h5 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h5><p>Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。</p>
-<h5 id="节点类型设计"><a href="#节点类型设计" class="headerlink" title="节点类型设计"></a>节点类型设计</h5><p><img src="/img/zknode.png" alt=""></p>
-<blockquote>
-</blockquote>
-<ul>
-<li>Cluster:  集群名称（对应业务名称）、每一个业务是一个独立的Cluster结构。zk根节点是[/clusters]。</li>
-<li>Node:     数据的逻辑分区、可以理解为分片。</li>
-<li>Instance：实际的Redis实例、由一小组主从结构构成。</li>
-</ul>
-<h5 id="节点数据设计"><a href="#节点数据设计" class="headerlink" title="节点数据设计"></a>节点数据设计</h5><p><img src="/img/uml.png" alt=""></p>
-<h5 id="路由流程设计"><a href="#路由流程设计" class="headerlink" title="路由流程设计"></a>路由流程设计</h5><p><img src="/img/flow.png" alt=""></p>
-<p>客户端请求的如何落到具体的实例上面。针对原有的Redis客户端、将所有的方法的第一个参数设置为hashKey、后续的处理的根据hash选择Node、根据读写策略获取Master实例还是Slave实例进行具体的读写。比如一个简单的场景，我们初始化了10个分片也就是10个Node节点，每个节点下面一主两从实例。配置Cluster的Hash策略为简单的取模运算。当我们以用户的Id为haskKey进行路由的话，根据用户Id的最后一位数字能确定我们的请求到具体哪个Node，在进行写入的操作的时候请求落到Master实例上面，在进行读操作的时候请求会落到Slave实例上面（当然这是简单的读写策略）。</p>
-<p>上面流程中第一步是根据hashKey获取Node。也就是根据hash算法得到我们的请求应该分配到那个分片上面。这个根据不同的业务场景会有不同的设计、有简单的取模哈希、有适应分布式的一致性哈希、有区域哈希、有前缀哈希等等。不能说那种算法最好，使用适合自己业务的。</p>
-<p>上面流程中第二步是根据读写策略获取具体的Instance了。一个Node下面是一个小的实例集群，根据自己的业务的需求可以自定义，一般的都是一主两从。如果是写入操作的话获取Master实例、如果是读操作的可以Master读、可以Slave读、可以随机读等等。</p>
-<h5 id="集群节点变更设计"><a href="#集群节点变更设计" class="headerlink" title="集群节点变更设计"></a>集群节点变更设计</h5><p><img src="/img/rehash.png" alt=""></p>
-<ul>
-<li>集群信息变更两个阶段的提交ACK和FINISH</li>
-<li>减少集群变更对数据一致性的影响</li>
-<li>集群状态SYN REHASH NORMAL</li>
-</ul>
-<h5 id="扩容设计"><a href="#扩容设计" class="headerlink" title="扩容设计"></a>扩容设计</h5><ul>
-<li>在业务设计的时候尽量预估好容量</li>
-<li>如果使用一致性哈希算法直接添加节点</li>
-<li>对于取模哈希或者区域哈希等其他的算法由于局限性可按倍扩容</li>
-<li>扩容之后节点的旧数据需要人工处理删除</li>
-</ul>
+        <p>JVM CMS垃圾回收器探索<br><a id="more"></a></p>
+<h4 id="CMS简介"><a href="#CMS简介" class="headerlink" title="CMS简介"></a>CMS简介</h4><p>&emsp;CMS垃圾回收器是针对老年代的回收方式、是以牺牲吞吐量为代价来获得最短回收停顿时间的垃圾回收器。对于要求服务器响应速度的应用上，这个方式非常适合。在JVM启动参数上面加上 <code>XX:+UseConcMarkSweepGC</code> 表示老年代使用CMS的方式回收，CMS的回收算法是&ensp;<strong>标记-清除</strong></p>
+<h4 id="CMS执行过程"><a href="#CMS执行过程" class="headerlink" title="CMS执行过程"></a>CMS执行过程</h4><h5 id="emsp-STW-initial-mark"><a href="#emsp-STW-initial-mark" class="headerlink" title="&emsp;STW initial mark"></a>&emsp;STW initial mark</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:46.066+0800: 58424.191: [GC (CMS Initial Mark) [1 CMS-initial-mark: 3636058K(5592448K)] 3691980K(7829376K), 0.0037087 secs] [Times: user=0.06 sys=0.00, real=0.00secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>初始标记：</strong> 这个阶段JVM停止正在执行的任务。从根对象开始扫描和root对象直接关联的对象。这个过程会很快。</p>
+<h5 id="emsp-Concurrent-marking"><a href="#emsp-Concurrent-marking" class="headerlink" title="&emsp;Concurrent marking"></a>&emsp;Concurrent marking</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:46.070+0800: 58424.195: [CMS-concurrent-mark-start]</span><br><span class="line">2018-11-21T11:41:46.122+0800: 58424.247: [CMS-concurrent-mark: 0.051/0.051 secs] [Times: user=0.57 sys=0.00, real=0.05 secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>并发标记：</strong> 这个阶段JVM标记线程和用户线程并发执行。在初始标记的基础上继续向下追溯扫描对象，这个过程不会停顿。</p>
+<h5 id="emsp-Concurrent-precleaning"><a href="#emsp-Concurrent-precleaning" class="headerlink" title="&emsp;Concurrent precleaning"></a>&emsp;Concurrent precleaning</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:46.122+0800: 58424.247: [CMS-concurrent-preclean-start]</span><br><span class="line">2018-11-21T11:41:46.143+0800: 58424.268: [CMS-concurrent-preclean: 0.021/0.021 secs] [Times: user=0.04 sys=0.01, real=0.02 secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>并发预清理：</strong> 这个阶段JVM标记线程和用户线程并发执行。JVM查找在并发标记阶段新进入老年代的对象。通过从新扫描减少下一个阶段的工作，这个过程不会停顿。</p>
+<h5 id="emsp-STW-remark"><a href="#emsp-STW-remark" class="headerlink" title="&emsp;STW remark"></a>&emsp;STW remark</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:47.486+0800: 58425.611: [GC (CMS Final Remark) [YG occupancy: 1078027 K (2236928 K)]</span><br><span class="line">2018-11-21T11:41:47.486+0800: 58425.611: [GC (CMS Final Remark) </span><br><span class="line">2018-11-21T11:41:47.486+0800: 58425.611: [ParNew: 1078027K-&gt;40803K(2236928K), 0.0066178 secs] 4714086K-&gt;3676908K(7829376K), 0.0069331 secs] [Times: user=0.14 sys=0.00, real=0.00 secs]</span><br><span class="line">2018-11-21T11:41:47.493+0800: 58425.618: [Rescan (non-parallel) </span><br><span class="line">2018-11-21T11:41:47.493+0800: 58425.618: [grey object rescan, 0.0209332 secs]</span><br><span class="line">2018-11-21T11:41:47.514+0800: 58425.639: [root rescan, 0.0128484 secs]</span><br><span class="line">2018-11-21T11:41:47.527+0800: 58425.652: [visit unhandled CLDs, 0.0000249 secs]</span><br><span class="line">2018-11-21T11:41:47.527+0800: 58425.652: [dirty klass scan, 0.0011690 secs], 0.0350621 secs]</span><br><span class="line">2018-11-21T11:41:47.528+0800: 58425.653: [weak refs processing, 0.0536894 secs]</span><br><span class="line">2018-11-21T11:41:47.582+0800: 58425.707: [class unloading, 0.0251479 secs]</span><br><span class="line">2018-11-21T11:41:47.607+0800: 58425.732: [scrub symbol table, 0.0052907 secs]</span><br><span class="line">2018-11-21T11:41:47.613+0800: 58425.737: [scrub string table, 0.0009897 secs][1 CMS-remark: 3636104K(5592448K)] 3676908K(7829376K), 0.1292316 secs] [Times: user=0.25 sys=0.01, real=0.13 secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>重新标记：</strong> 这个阶段JVM停止正在执行的任务。最终确认老年代中存活的对象，因为之前的处理都是并发的，应用程序也在不停的分配对象。</p>
+<h5 id="emsp-Concurrent-sweeping"><a href="#emsp-Concurrent-sweeping" class="headerlink" title="&emsp;Concurrent sweeping"></a>&emsp;Concurrent sweeping</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:47.616+0800: 58425.741: [CMS-concurrent-sweep-start]</span><br><span class="line">2018-11-21T11:41:50.523+0800: 58428.648: [CMS-concurrent-sweep: 2.889/2.908 secs] [Times: user=5.07 sys=0.13, real=2.91 secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>并发清理：</strong> 这个阶段JVM清理线程和用户线程并发执行，清理死亡对象。</p>
+<h5 id="emsp-Concurrent-reset"><a href="#emsp-Concurrent-reset" class="headerlink" title="&emsp;Concurrent reset"></a>&emsp;Concurrent reset</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">2018-11-21T11:41:50.524+0800: 58428.649: [CMS-concurrent-reset-start]</span><br><span class="line">2018-11-21T11:41:50.537+0800: 58428.662: [CMS-concurrent-reset: 0.014/0.014 secs] [Times: user=0.03 sys=0.00, real=0.01 secs]</span><br></pre></td></tr></table></figure>
+<p>&emsp;<strong>并发重置：</strong> 重置CMS收集器数据结构，等待下一次回收。</p>
+<h4 id="CMS参数优化"><a href="#CMS参数优化" class="headerlink" title="CMS参数优化"></a>CMS参数优化</h4><ol>
+<li>由于CMS垃圾回收器使用的是标记-清除回收算法，随着GC的执行老年代会逐渐产生内存碎片,可以使用 <code>-XX:+UseCMSCompactAtFullCollection</code> 这个参数在每次执行CMS GC之后进行一次压缩处理。可以根据自己的应用老年代对象的情况调整 <code>-XX:CMSFullGCsBeforeCompaction=1</code> 这个参数来控制每隔几次GC之后进行压缩操作。</li>
+<li>CMS在垃圾回收的过程当中，会不停的有新对象在老年代分配，在CMS回收之前必须留有一部分空间，所以CMS不会在老年代满了的时候开始回收，使用 <code>-XX:CMSInitiatingOccupancyFraction=65 -XX:+UseCMSInitiatingOccupancyOnly</code> 这个两个参数来配置老年代空间到达什么阈值之后开始回收。特别注意的是如果不配置第二个参数，CMS只会在第一次回收的按照设置的阈值，后面CMS会根据情况动态调整阈值参数。</li>
+<li>由CMS回收的过程中我们可以知道，在初始标记和重新标记两个阶段会STW，所以为了使得这两个阶段尽可能快一点执行完成，可以使用 <code>-XX:+CMSParallelInitialMarkEnabled -XX:+CMSParallelRemarkEnabled</code> 这个参数来开启并行标记。</li>
+<li>在CMS回收的过程中，耗时最长的是重新标记阶段，可以使用 <code>-XX:+CMSScavengeBeforeRemark</code> 这个参数在重新标记之前执行一次Young GC。这样Young区待标记的对象就会减少很多，重新标记阶段的工作量就会少很多。因为执行Young GC也有一定的耗时，所以这个参数需要自己做一个权衡。</li>
+</ol>
 
       
     </div>
@@ -519,9 +503,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/GC/" rel="tag"># GC</a>
           
         </div>
       
@@ -534,8 +518,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/10/mergeSort/" rel="next" title="归并排序">
-                <i class="fa fa-chevron-left"></i> 归并排序
+              <a href="/2018/11/17/GC/" rel="next" title="Promotion Failed">
+                <i class="fa fa-chevron-left"></i> Promotion Failed
               </a>
             
           </div>
@@ -543,10 +527,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/01/zk分布式锁/" rel="prev" title="zk分布式锁">
-                zk分布式锁 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -714,7 +694,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#节点类型设计"><span class="nav-number">2.</span> <span class="nav-text">节点类型设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#节点数据设计"><span class="nav-number">3.</span> <span class="nav-text">节点数据设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#路由流程设计"><span class="nav-number">4.</span> <span class="nav-text">路由流程设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群节点变更设计"><span class="nav-number">5.</span> <span class="nav-text">集群节点变更设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#扩容设计"><span class="nav-number">6.</span> <span class="nav-text">扩容设计</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#CMS简介"><span class="nav-number">1.</span> <span class="nav-text">CMS简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMS执行过程"><span class="nav-number">2.</span> <span class="nav-text">CMS执行过程</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-STW-initial-mark"><span class="nav-number">2.1.</span> <span class="nav-text"> STW initial mark</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-Concurrent-marking"><span class="nav-number">2.2.</span> <span class="nav-text"> Concurrent marking</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-Concurrent-precleaning"><span class="nav-number">2.3.</span> <span class="nav-text"> Concurrent precleaning</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-STW-remark"><span class="nav-number">2.4.</span> <span class="nav-text"> STW remark</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-Concurrent-sweeping"><span class="nav-number">2.5.</span> <span class="nav-text"> Concurrent sweeping</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#emsp-Concurrent-reset"><span class="nav-number">2.6.</span> <span class="nav-text"> Concurrent reset</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CMS参数优化"><span class="nav-number">3.</span> <span class="nav-text">CMS参数优化</span></a></li></ol></div>
             
 
           </div>

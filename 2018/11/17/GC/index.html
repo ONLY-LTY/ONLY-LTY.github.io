@@ -107,31 +107,25 @@
 
 
 
-  <meta name="description" content="Redis 分布式路由中间件">
-<meta name="keywords" content="分布式,Redis">
+  <meta name="description" content="GC 日志Promotion Failed 错误分析">
+<meta name="keywords" content="JVM,GC">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis 分布式存储">
-<meta property="og:url" content="http://lty.com/2018/05/29/redis-store/index.html">
+<meta property="og:title" content="Promotion Failed">
+<meta property="og:url" content="http://lty.com/2018/11/17/GC/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="Redis 分布式路由中间件">
+<meta property="og:description" content="GC 日志Promotion Failed 错误分析">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://lty.com/img/Redis分布式.png">
-<meta property="og:image" content="http://lty.com/img/zknode.png">
-<meta property="og:image" content="http://lty.com/img/uml.png">
-<meta property="og:image" content="http://lty.com/img/flow.png">
-<meta property="og:image" content="http://lty.com/img/rehash.png">
-<meta property="og:updated_time" content="2018-06-04T08:28:04.636Z">
+<meta property="og:updated_time" content="2018-11-17T09:52:59.388Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis 分布式存储">
-<meta name="twitter:description" content="Redis 分布式路由中间件">
-<meta name="twitter:image" content="http://lty.com/img/Redis分布式.png">
+<meta name="twitter:title" content="Promotion Failed">
+<meta name="twitter:description" content="GC 日志Promotion Failed 错误分析">
 
 
 
 
 
 
-  <link rel="canonical" href="http://lty.com/2018/05/29/redis-store/"/>
+  <link rel="canonical" href="http://lty.com/2018/11/17/GC/"/>
 
 
 
@@ -141,7 +135,7 @@
   };
 </script>
 
-  <title>Redis 分布式存储 | LTY's Blog</title>
+  <title>Promotion Failed | LTY's Blog</title>
   
 
 
@@ -344,7 +338,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/05/29/redis-store/">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/11/17/GC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="像个孩子壹洋">
@@ -361,7 +355,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Redis 分布式存储
+          <h1 class="post-title" itemprop="name headline">Promotion Failed
               
             
           </h1>
@@ -387,24 +381,12 @@
                 
               
 
-              <time title="创建时间：2018-05-29 12:18:36" itemprop="dateCreated datePublished" datetime="2018-05-29T12:18:36+08:00">2018-05-29</time>
+              <time title="创建时间：2018-11-17 16:40:00 / 修改时间：17:52:59" itemprop="dateCreated datePublished" datetime="2018-11-17T16:40:00+08:00">2018-11-17</time>
             
 
             
               
 
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-06-04 16:28:04" itemprop="dateModified" datetime="2018-06-04T16:28:04+08:00">2018-06-04</time>
               
             
           </span>
@@ -437,36 +419,16 @@
       
 
       
-        <p>Redis 分布式路由中间件<br><a id="more"></a></p>
-<p>入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。</p>
-<p>先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）</p>
-<p><img src="/img/Redis分布式.png" alt=""></p>
-<h5 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h5><p>Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。</p>
-<h5 id="节点类型设计"><a href="#节点类型设计" class="headerlink" title="节点类型设计"></a>节点类型设计</h5><p><img src="/img/zknode.png" alt=""></p>
+        <p>GC 日志Promotion Failed 错误分析<br><a id="more"></a></p>
+<p>JVM参数配置(优化过之后的参数)</p>
 <blockquote>
+<p>jvm_args=”-Xmx8192m -Xms8192m -verbose:gc -Xloggc:$logPATH/gc.log -XX:CMSInitiatingOccupancyFraction=65 -XX:+UseCMSInitiatingOccupancyOnly -XX:+CMSScavengeBeforeRemark -XX:+UseCMSCompactAtFullCollection -XX:CMSFullGCsBeforeCompaction=1 -XX:MaxTenuringThreshold=10 -XX:-UseAdaptiveSizePolicy -XX:PermSize=256M -XX:MaxPermSize=512M -XX:SurvivorRatio=3  -XX:NewRatio=2 -XX:+PrintGCDateStamps  -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+PrintGCDetails -XX:+AlwaysPreTouch -XX:-CMSParallelRemarkEnabled”</p>
 </blockquote>
-<ul>
-<li>Cluster:  集群名称（对应业务名称）、每一个业务是一个独立的Cluster结构。zk根节点是[/clusters]。</li>
-<li>Node:     数据的逻辑分区、可以理解为分片。</li>
-<li>Instance：实际的Redis实例、由一小组主从结构构成。</li>
-</ul>
-<h5 id="节点数据设计"><a href="#节点数据设计" class="headerlink" title="节点数据设计"></a>节点数据设计</h5><p><img src="/img/uml.png" alt=""></p>
-<h5 id="路由流程设计"><a href="#路由流程设计" class="headerlink" title="路由流程设计"></a>路由流程设计</h5><p><img src="/img/flow.png" alt=""></p>
-<p>客户端请求的如何落到具体的实例上面。针对原有的Redis客户端、将所有的方法的第一个参数设置为hashKey、后续的处理的根据hash选择Node、根据读写策略获取Master实例还是Slave实例进行具体的读写。比如一个简单的场景，我们初始化了10个分片也就是10个Node节点，每个节点下面一主两从实例。配置Cluster的Hash策略为简单的取模运算。当我们以用户的Id为haskKey进行路由的话，根据用户Id的最后一位数字能确定我们的请求到具体哪个Node，在进行写入的操作的时候请求落到Master实例上面，在进行读操作的时候请求会落到Slave实例上面（当然这是简单的读写策略）。</p>
-<p>上面流程中第一步是根据hashKey获取Node。也就是根据hash算法得到我们的请求应该分配到那个分片上面。这个根据不同的业务场景会有不同的设计、有简单的取模哈希、有适应分布式的一致性哈希、有区域哈希、有前缀哈希等等。不能说那种算法最好，使用适合自己业务的。</p>
-<p>上面流程中第二步是根据读写策略获取具体的Instance了。一个Node下面是一个小的实例集群，根据自己的业务的需求可以自定义，一般的都是一主两从。如果是写入操作的话获取Master实例、如果是读操作的可以Master读、可以Slave读、可以随机读等等。</p>
-<h5 id="集群节点变更设计"><a href="#集群节点变更设计" class="headerlink" title="集群节点变更设计"></a>集群节点变更设计</h5><p><img src="/img/rehash.png" alt=""></p>
-<ul>
-<li>集群信息变更两个阶段的提交ACK和FINISH</li>
-<li>减少集群变更对数据一致性的影响</li>
-<li>集群状态SYN REHASH NORMAL</li>
-</ul>
-<h5 id="扩容设计"><a href="#扩容设计" class="headerlink" title="扩容设计"></a>扩容设计</h5><ul>
-<li>在业务设计的时候尽量预估好容量</li>
-<li>如果使用一致性哈希算法直接添加节点</li>
-<li>对于取模哈希或者区域哈希等其他的算法由于局限性可按倍扩容</li>
-<li>扩容之后节点的旧数据需要人工处理删除</li>
-</ul>
+<p>GC错误日志</p>
+<blockquote>
+<p>2018-11-15T09:01:50.794+0800: 51454.418: [GC (Allocation Failure) 2018-11-15T09:01:50.794+0800: 51454.419: [ParNew (promotion failed): 1782424K-&gt;1769555K(2236928K), 0.8356030 secs]2018-11-15T09:01:51.630+0800: 51455.254: [CMS: 3509138K-&gt;874891K(5592448K), 4.5982825 secs] 5290213K-&gt;874891K(7829376K), [Metaspace: 56929K-&gt;56929K(1101824K)], 5.4344311 secs] [Times: user=3.61 sys=2.44, real=5.43 secs]</p>
+</blockquote>
+<p>上面是一次GC日志、从错误信息来看是Eden区的对象晋升失败了。从日志我们看出来Young GC的时候只回收了（178242-176955）12869k对象、剩下176955k(1.68G)存活对象需要放入到Survivor区、由上面的配置我们推算出Survivor区只有546M的大小、这个时候肯定需要放入Old区了。而此时的Old区剩余（5290213k-3509138k）1.69G的内存、需要放入（1.68G-546M）1.14G大小的对象。这里是不是觉得应该放的下。其实CMS使用的标记清理的内存回收算法，随着时间的迁移会逐渐产生内存碎片。此时如果存活对象中有大对象而且内存碎片不足以分配就会发生上面日志中的那种情况。这个时候CMS会执行GC回收Old区然后放存活的对象。由于整个过程是在ParNew阶段，所以整个过程是STW的。后果可想而知。<br>其实问题的核心是Young GG的时候为什么有那么多存活的对象。这个问题就要根据自己当时的具体情况去分析了。</p>
 
       
     </div>
@@ -519,9 +481,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/分布式/" rel="tag"># 分布式</a>
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
           
-            <a href="/tags/Redis/" rel="tag"># Redis</a>
+            <a href="/tags/GC/" rel="tag"># GC</a>
           
         </div>
       
@@ -534,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/10/mergeSort/" rel="next" title="归并排序">
-                <i class="fa fa-chevron-left"></i> 归并排序
+              <a href="/2018/09/26/IdeaVim/" rel="next" title="IdeaVim">
+                <i class="fa fa-chevron-left"></i> IdeaVim
               </a>
             
           </div>
@@ -544,8 +506,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/01/zk分布式锁/" rel="prev" title="zk分布式锁">
-                zk分布式锁 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/11/17/CMS/" rel="prev" title="垃圾回收器之CMS">
+                垃圾回收器之CMS <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -591,17 +553,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -704,22 +657,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#节点类型设计"><span class="nav-number">2.</span> <span class="nav-text">节点类型设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#节点数据设计"><span class="nav-number">3.</span> <span class="nav-text">节点数据设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#路由流程设计"><span class="nav-number">4.</span> <span class="nav-text">路由流程设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#集群节点变更设计"><span class="nav-number">5.</span> <span class="nav-text">集群节点变更设计</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#扩容设计"><span class="nav-number">6.</span> <span class="nav-text">扩容设计</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
