@@ -15,7 +15,7 @@
 
 <html class="theme-next mist use-motion" lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
 <meta name="theme-color" content="#222">
@@ -175,7 +175,7 @@
       .logo-line-after i { right: initial; }
     }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -186,7 +186,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -467,7 +467,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="/img/20161116a.jpg" rel="gallery_cjx34bs9d000drpqml1k3s7ug"
+                 href="/img/20161116a.jpg" rel="gallery_cjx37h4lh000c0cqmprmbgl67"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="/img/20161116a.jpg" itemprop="contentUrl"/>
               </a>
@@ -486,8 +486,8 @@
 <p>&emsp;&emsp;上面说完了类加载加载的是什么东西，在说说Java类加载的一个流程，<font color="red">虚拟机把描述类的数据从class文件加载到内存，并对数据进行校验，转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这就是虚拟机的类加载机制。</font>这些过程具体讲起来就很多了，本文就不做过多的详述了，具体大家去看看书本的知识。</p>
 <h3 id="Java类加载的双亲委派模型"><a href="#Java类加载的双亲委派模型" class="headerlink" title="Java类加载的双亲委派模型"></a>Java类加载的双亲委派模型</h3><blockquote>
 <ol>
-<li><strong>Bootstrap ClassLoader</strong>。将存放于&lt;JAVA_HOME&gt;\lib目录中的，或者被-Xbootclasspath参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar 名字不符合的类库即使放在lib目录中也不会被加载）类库加载到虚拟机内存中。启动类加载器无法被Java程序直接引用</li>
-<li><strong>Extension ClassLoader</strong> : 将&lt;JAVA_HOME&gt;\lib\ext目录下的，或者被java.ext.dirs系统变量所指定的路径中的所有类库加载。开发者可以直接使用扩展类加载器。     </li>
+<li><strong>Bootstrap ClassLoader</strong>。将存放于<java_home>\lib目录中的，或者被-Xbootclasspath参数所指定的路径中的，并且是虚拟机识别的（仅按照文件名识别，如 rt.jar 名字不符合的类库即使放在lib目录中也不会被加载）类库加载到虚拟机内存中。启动类加载器无法被Java程序直接引用</java_home></li>
+<li><strong>Extension ClassLoader</strong> : 将<java_home>\lib\ext目录下的，或者被java.ext.dirs系统变量所指定的路径中的所有类库加载。开发者可以直接使用扩展类加载器。     </java_home></li>
 <li><strong> Application ClassLoader</strong> : 负责加载用户类路径(ClassPath)上所指定的类库,开发者可直接使用。</li>
 </ol>
 </blockquote>
@@ -1246,6 +1246,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
   
@@ -1264,7 +1271,24 @@
 
   
   
-    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 </body>
 </html>

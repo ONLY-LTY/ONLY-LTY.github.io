@@ -15,7 +15,7 @@
 
 <html class="theme-next mist use-motion" lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
 <meta name="theme-color" content="#222">
@@ -175,7 +175,7 @@
       .logo-line-after i { right: initial; }
     }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
@@ -186,7 +186,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -467,7 +467,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="/img/20161114.jpeg" rel="gallery_cjx34bs9t0016rpqmg7rgz3ky"
+                 href="/img/20161114.jpeg" rel="gallery_cjx37h4sg001k0cqm85d40z3c"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="/img/20161114.jpeg" itemprop="contentUrl"/>
               </a>
@@ -494,7 +494,7 @@
 <h3 id="结束语"><a href="#结束语" class="headerlink" title="结束语"></a>结束语</h3><p>&emsp;&emsp;Jquery 中的ajax使用了jsonp这样的技术，最开始上面的问题，由于我用了Jquery的ajax去请求第三方发短信接口，Jquery发现是跨域请求就默认使用了jsonp的方式并且使用的默认的回调方法，由于第三方接口没有配合jsonp的使用，返回的不是可调用的js代码，Jquery就是处理的时候进入到了error回调。这就是为啥接口调用成功了但是进入的error的回调。知道了jsonp的原理，我们可以很容易的看出这样只能支持GET请求，对于POST请求时无能为力的。这也是jsonp的一个限制吧。在Jquery的高版本中，会将跨域的POST请求，自动转换成GET请求。如果发现自己method写的POST然后发现成功了，不要惊讶，打开浏览器F12查看一下你就会发现其实是GET请求了。<font color="red">再有使用jsonp一定要服务端的配合使用，不要自己在前端写写就觉得可以实现跨域了。</font>现在基本上都用Nginx做反向代理来解决跨域问题，很方便。</p>
 <p>&emsp;&emsp;通过这次小洋知道了跨域的一系列原理，文章内容不入法眼，只是提醒一下自己，凡是要知其所以然才能随心所欲。</p>
 <hr>
-<p align="center"><font color="blue">与其临渊羡鱼,不如退而结网</font></p><p align="right">–《史记·汉书·董仲舒传》</p>
+<p align="center"><font color="blue">与其临渊羡鱼,不如退而结网</font></p><p align="right">--《史记·汉书·董仲舒传》</p>
 
 <hr>
 
@@ -1243,6 +1243,13 @@
   
 
   
+  
+
+  
+  
+
+  
+
 
   
   
@@ -1261,7 +1268,24 @@
 
   
   
-    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
   
 </body>
 </html>
