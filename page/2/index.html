@@ -368,6 +368,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/06/01/zk分布式锁/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="像个孩子壹洋">
+      <meta itemprop="description" content="世界那么大、我带你想去看看">
+      <meta itemprop="image" content="/images/timg.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="LTY's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2018/06/01/zk分布式锁/" class="post-title-link" itemprop="http://lty.com/page/2/index.html">Zookeeper分布式锁</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-06-01 18:09:31" itemprop="dateCreated datePublished" datetime="2018-06-01T18:09:31+08:00">2018-06-01</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-10-14 12:23:38" itemprop="dateModified" datetime="2019-10-14T12:23:38+08:00">2019-10-14</time>
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          基于Zookeeper的分布式锁
+锁流程
+代码实现Curator框架已经实现了基于Zookeeper的可重入的分布式锁 InterProcessMutex
+构造方法1234567891011121314151617181920212223242526/** * @param client clien
+          ...
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2018/06/01/zk分布式锁/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://lty.com/2018/05/29/redis-store/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -431,7 +597,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-06-04 16:28:04" itemprop="dateModified" datetime="2018-06-04T16:28:04+08:00">2018-06-04</time>
+                <time title="修改时间：2019-10-14 12:25:42" itemprop="dateModified" datetime="2019-10-14T12:25:42+08:00">2019-10-14</time>
               
             
           </span>
@@ -465,7 +631,13 @@
 
       
         
-          <p>Redis 分布式路由中间件<br>
+          
+          Redis 分布式路由中间件
+入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。
+先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）
+
+概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zooke
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -473,7 +645,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -592,7 +764,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-06-04 16:27:57" itemprop="dateModified" datetime="2018-06-04T16:27:57+08:00">2018-06-04</time>
+                <time title="修改时间：2019-10-14 12:26:19" itemprop="dateModified" datetime="2019-10-14T12:26:19+08:00">2019-10-14</time>
               
             
           </span>
@@ -626,7 +798,11 @@
 
       
         
-          <p>归并排序<br>
+          
+          归并排序
+核心思想  归并排序是分治法的运用、所谓分治法就是将一个大问题分成一个个小的具有相同性质的问题。在归并排序中对于一个无序数组我们可以将数组先从中间分成两个数组然后对这两个数组进行排序。排序好了之后再将这两个有序的数组合并在一起。这个时候对于两个数组的排序就可以复用我们刚才的思想。
+分的思想
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -634,184 +810,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://lty.com/2018/03/28/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="像个孩子壹洋">
-      <meta itemprop="description" content="世界那么大、我带你想去看看">
-      <meta itemprop="image" content="/images/timg.jpeg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="LTY's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2018/03/28/hello-world/" class="post-title-link" itemprop="http://lty.com/page/2/index.html">Hello World</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
           
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2018-03-28 15:20:47" itemprop="dateCreated datePublished" datetime="2018-03-28T15:20:47+08:00">2018-03-28</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-04-10 15:42:56" itemprop="dateModified" datetime="2018-04-10T15:42:56+08:00">2018-04-10</time>
-              
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-          
-          
-            <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox"
-                 href="/img/20160825-stock-photo-125631967.jpg" rel="gallery_cjz9g2lq1001k66qm5cf9aqv3"
-                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="/img/20160825-stock-photo-125631967.jpg" itemprop="contentUrl"/>
-              </a>
-            
-          
-
-          
-          </div>
-        </div>
-      
-
-      
-        
-          <p>你好、世界<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2018/03/28/hello-world/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-         
           <!--/noindex-->
         
       
@@ -930,7 +929,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+                <time title="修改时间：2019-10-14 12:26:33" itemprop="dateModified" datetime="2019-10-14T12:26:33+08:00">2019-10-14</time>
               
             
           </span>
@@ -964,7 +963,12 @@
 
       
         
-          <p>Linux 远程登录 免密码<br>
+          
+          Linux 远程登录 免密码
+第一步 将本地的 id_rsa.pub 文件上传到远程服务器123scp /Users/LTY/.ssh/id_rsa.pub userName@Host:~/#输入密码 回车
+第二步 登录远程服务器123ssh usreName@Host#输入远程服务器密码 回车
+第
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -972,7 +976,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1091,7 +1095,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2019-06-26 17:48:30" itemprop="dateModified" datetime="2019-06-26T17:48:30+08:00">2019-06-26</time>
+                <time title="修改时间：2019-10-14 12:21:30" itemprop="dateModified" datetime="2019-10-14T12:21:30+08:00">2019-10-14</time>
               
             
           </span>
@@ -1125,7 +1129,10 @@
 
       
         
-          <p>Linux 常用命令<br>
+          
+          Linux 常用命令
+12345678910111213141516171819202122232425262728293031323334353637383940hexdump -C binfile | less   查看二进制文件sudo tcpdump -i eth0 -Xlnps0 port
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1133,7 +1140,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1252,7 +1259,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-04-10 15:42:54" itemprop="dateModified" datetime="2018-04-10T15:42:54+08:00">2018-04-10</time>
+                <time title="修改时间：2019-10-14 12:18:39" itemprop="dateModified" datetime="2019-10-14T12:18:39+08:00">2019-10-14</time>
               
             
           </span>
@@ -1286,7 +1293,10 @@
 
       
         
-          <p>HashSet 解析<br>
+          
+          HashSet 源码解析
+1 初始化HashSet是一个实现非常简单的类，为什么这么说呢？因为它的实现基本都依赖于HashMap，可以先来看一下初始化的内容123456789101112131415161718public class HashSet&lt;E&gt;  extends Abstra
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1294,7 +1304,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1413,7 +1423,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+                <time title="修改时间：2019-10-14 12:20:28" itemprop="dateModified" datetime="2019-10-14T12:20:28+08:00">2019-10-14</time>
               
             
           </span>
@@ -1447,7 +1457,10 @@
 
       
         
-          <p>LinkedList 解析<br>
+          
+          LinkedList 源码解析
+1 初始化LinkedList也实现了List接口，说明了也具备了插入和删除功能,基于链表，插入和删除比ArrayList快，但是随机访问能力差，这个基础数据结构已经说明了，不再重复。其次LinkedList具备了双端队列的功能，实现了Deque接口1234publi
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1455,7 +1468,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1574,7 +1587,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+                <time title="修改时间：2019-10-14 12:12:26" itemprop="dateModified" datetime="2019-10-14T12:12:26+08:00">2019-10-14</time>
               
             
           </span>
@@ -1608,7 +1621,11 @@
 
       
         
-          <p>ArrayList 解析<br>
+          
+          ArrayList 源码解析
+1 初始化ArrayList类定义，通过类定义可以分析出ArrayList具备了RandomAccess（支持随机访问）、Cloneable（可以被复制）、Serializable（序列化）
+123public class ArrayList&lt;E&gt; exte
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1616,7 +1633,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1735,7 +1752,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+                <time title="修改时间：2019-10-14 12:20:16" itemprop="dateModified" datetime="2019-10-14T12:20:16+08:00">2019-10-14</time>
               
             
           </span>
@@ -1769,7 +1786,11 @@
 
       
         
-          <p>LinkedHashMap 解析<br>
+          
+          LinkedHashMap 源码解析
+概述众所周知HashMap里面元素是无序的，而LinkedHashMap说直接点就是元素有序的HashMap。
+初始化1234567891011121314151617/**     * Constructs an empty &lt;tt&gt;LinkedH
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1777,7 +1798,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       
@@ -1896,7 +1917,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-04-10 15:43:30" itemprop="dateModified" datetime="2018-04-10T15:43:30+08:00">2018-04-10</time>
+                <time title="修改时间：2019-10-14 12:18:26" itemprop="dateModified" datetime="2019-10-14T12:18:26+08:00">2019-10-14</time>
               
             
           </span>
@@ -1930,7 +1951,11 @@
 
       
         
-          <p>HashMap 解析<br>
+          
+          HashMap 源码解析
+概述HashMap 是一个集合对象，存储key-value类型的数据。内部主要使用哈希表的结构去实现。至于哈希表的的结构我们在此不做详细介绍，可自行脑补。下面的源码基于JDK1.8，由于进行了很多优化，代码会有点复杂。
+成员变量12345678910111213141516
+          ...
           <!--noindex-->
           
             <div class="post-button text-center">
@@ -1938,7 +1963,7 @@
                 阅读全文 &raquo;
               </a>
             </div>
-         
+          
           <!--/noindex-->
         
       

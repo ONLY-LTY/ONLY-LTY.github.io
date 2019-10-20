@@ -107,20 +107,18 @@
 
 
 
-  <meta name="description" content="Java 类加载机制">
+  <meta name="description" content="Java 类加载机制 说在前面的话&amp;emsp;&amp;emsp;JVM的相关知识很多,其实主要我们在平时接触到就三个部分一个是内存模型，一个是类加载，在一个就是垃圾回收，要看具体的内容可以去看《深入理解Java虚拟机》这本书,慢慢品味会有不少的收获，记得自己刚开始面试那会前面几章看了好多遍，奈何当时只是应付面试,里面好多东西都不是很理解,现在在来复习一下说说自己的见解。 &amp;emsp;&amp;emsp;谈到Ja">
 <meta name="keywords" content="Jvm,Classloader">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Jvm Classloader">
 <meta property="og:url" content="http://lty.com/2016/11/16/Jvm-Classloader/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="Java 类加载机制">
+<meta property="og:description" content="Java 类加载机制 说在前面的话&amp;emsp;&amp;emsp;JVM的相关知识很多,其实主要我们在平时接触到就三个部分一个是内存模型，一个是类加载，在一个就是垃圾回收，要看具体的内容可以去看《深入理解Java虚拟机》这本书,慢慢品味会有不少的收获，记得自己刚开始面试那会前面几章看了好多遍，奈何当时只是应付面试,里面好多东西都不是很理解,现在在来复习一下说说自己的见解。 &amp;emsp;&amp;emsp;谈到Ja">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://lty.com/img/20161116a.jpg">
-<meta property="og:updated_time" content="2018-03-28T07:21:53.467Z">
+<meta property="og:updated_time" content="2019-10-14T04:19:42.331Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jvm Classloader">
-<meta name="twitter:description" content="Java 类加载机制">
-<meta name="twitter:image" content="http://lty.com/img/20161116a.jpg">
+<meta name="twitter:description" content="Java 类加载机制 说在前面的话&amp;emsp;&amp;emsp;JVM的相关知识很多,其实主要我们在平时接触到就三个部分一个是内存模型，一个是类加载，在一个就是垃圾回收，要看具体的内容可以去看《深入理解Java虚拟机》这本书,慢慢品味会有不少的收获，记得自己刚开始面试那会前面几章看了好多遍，奈何当时只是应付面试,里面好多东西都不是很理解,现在在来复习一下说说自己的见解。 &amp;emsp;&amp;emsp;谈到Ja">
 
 
 
@@ -431,7 +429,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-28 15:21:53" itemprop="dateModified" datetime="2018-03-28T15:21:53+08:00">2018-03-28</time>
+                <time title="修改时间：2019-10-14 12:19:42" itemprop="dateModified" datetime="2019-10-14T12:19:42+08:00">2019-10-14</time>
               
             
           </span>
@@ -462,25 +460,9 @@
 
       
       
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-          
-          
-            <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox"
-                 href="/img/20161116a.jpg" rel="gallery_cjz9g2lp8000d66qmr0wn01rq"
-                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="/img/20161116a.jpg" itemprop="contentUrl"/>
-              </a>
-            
-          
-
-          
-          </div>
-        </div>
-      
 
       
-        <p>Java 类加载机制<br><a id="more"></a></p>
+        <p>Java 类加载机制</p>
 <h3 id="说在前面的话"><a href="#说在前面的话" class="headerlink" title="说在前面的话"></a>说在前面的话</h3><p>&emsp;&emsp;JVM的相关知识很多,其实主要我们在平时接触到就三个部分一个是内存模型，一个是类加载，在一个就是垃圾回收，要看具体的内容可以去看《深入理解Java虚拟机》这本书,慢慢品味会有不少的收获，记得自己刚开始面试那会前面几章看了好多遍，奈何当时只是应付面试,里面好多东西都不是很理解,现在在来复习一下说说自己的见解。</p>
 <p>&emsp;&emsp;谈到Java的类加载机制，首先我们要知道类加载到底加载的是什么，其实好多人看网上的文章说的什么双亲委派模型啊，一些基础的都没有说明白。<font color="red">Class文件由类装载器装载后，在JVM中将形成一份描述Class结构的元信息对象，通过该元信息对象可以获知Class的结构信息：如构造函数，属性和方法等，Java允许用户借由这个Class相关的元信息对象间接调用Class对象的功能。</font>这是比较官方的说法，我的理解是这样的，Java中我们可以对一切相同属性的东西抽象一个父类。比如宝马，奔驰，奥迪，他们都有四个轮子，有发动机等等，我们就可以抽象出一个汽车类。在Java中，进行装载的是一系列class文件，这些class文件都有构造函数，成员属性，成员方法等，所以Java就将这些抽象出来了Class对象。<font color="red">一个class文件进行加载了之后，只会有一个Class对象，之后再次加载的时候，会去检查是否加载了。</font></p>
 <p>&emsp;&emsp;上面说完了类加载加载的是什么东西，在说说Java类加载的一个流程，<font color="red">虚拟机把描述类的数据从class文件加载到内存，并对数据进行校验，转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型，这就是虚拟机的类加载机制。</font>这些过程具体讲起来就很多了，本文就不做过多的详述了，具体大家去看看书本的知识。</p>
