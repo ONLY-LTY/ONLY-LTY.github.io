@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="前段时间自己在做附近直播相关业务，其中有一个核心的点就是检索用户附近的主播，也是主要召回池。针对业务场景的特殊性，最后决定使用Redis的GEO技术来完成这个功能。主要考虑点在于每天在线直播的主播数量是固定的差不多一万这个量级，使用配置好一点的单机Redis单key存储是没问题的。数据操作主要有两个：一是主播开播的时候写入主播Id的经纬度，二是主播关播的时候删除主播Id元素。这样就维护了一个具有位">
+<meta name="keywords" content="Redis">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis GEO 详解">
+<meta property="og:url" content="http://lty.com/2019/06/25/RedisoGeo/index.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="前段时间自己在做附近直播相关业务，其中有一个核心的点就是检索用户附近的主播，也是主要召回池。针对业务场景的特殊性，最后决定使用Redis的GEO技术来完成这个功能。主要考虑点在于每天在线直播的主播数量是固定的差不多一万这个量级，使用配置好一点的单机Redis单key存储是没问题的。数据操作主要有两个：一是主播开播的时候写入主播Id的经纬度，二是主播关播的时候删除主播Id元素。这样就维护了一个具有位">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://lty.com/img/rectangle.png">
+<meta property="og:image" content="http://lty.com/img/z.png">
+<meta property="og:image" content="http://lty.com/img/lat.jpg">
+<meta property="og:image" content="http://lty.com/img/combina.jpg">
+<meta property="og:image" content="http://lty.com/img/earth.jpg">
+<meta property="og:image" content="http://lty.com/img/precision.jpg">
+<meta property="og:updated_time" content="2024-08-01T02:14:50.413Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis GEO 详解">
+<meta name="twitter:description" content="前段时间自己在做附近直播相关业务，其中有一个核心的点就是检索用户附近的主播，也是主要召回池。针对业务场景的特殊性，最后决定使用Redis的GEO技术来完成这个功能。主要考虑点在于每天在线直播的主播数量是固定的差不多一万这个量级，使用配置好一点的单机Redis单key存储是没问题的。数据操作主要有两个：一是主播开播的时候写入主播Id的经纬度，二是主播关播的时候删除主播Id元素。这样就维护了一个具有位">
+<meta name="twitter:image" content="http://lty.com/img/rectangle.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Redis GEO 详解</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2019/07/01/three/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2019/06/19/recommendSimilar/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2019/06/25/RedisoGeo/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2019/06/25/RedisoGeo/&text=Redis GEO 详解"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2019/06/25/RedisoGeo/&is_video=false&description=Redis GEO 详解"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Redis GEO 详解&body=Check out this article: http://lty.com/2019/06/25/RedisoGeo/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2019/06/25/RedisoGeo/&name=Redis GEO 详解&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2019/06/25/RedisoGeo/&t=Redis GEO 详解"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#Redis-GEO-命令"><span class="toc-number">1.</span> <span class="toc-text">Redis GEO 命令</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Redis-GEO-原理"><span class="toc-number">2.</span> <span class="toc-text">Redis GEO 原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#GEO-HASH-延伸"><span class="toc-number">3.</span> <span class="toc-text">GEO HASH 延伸</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Redis GEO 详解
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">像个孩子壹洋</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-06-25T04:07:21.000Z" class="dt-published" itemprop="datePublished">2019-06-25</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/Redis/">Redis</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>前段时间自己在做附近直播相关业务，其中有一个核心的点就是检索用户附近的主播，也是主要召回池。针对业务场景的特殊性，最后决定使用<code>Redis</code>的<code>GEO</code>技术来完成这个功能。主要考虑点在于每天在线直播的主播数量是固定的差不多一万这个量级，使用配置好一点的单机<code>Redis</code>单<code>key</code>存储是没问题的。数据操作主要有两个：一是主播开播的时候写入主播<code>Id</code>的经纬度，二是主播关播的时候删除主播<code>Id</code>元素。这样就维护了一个具有位置信息的在线主播集合提供给线上检索。下面详细介绍一下。</p>
+<h5 id="Redis-GEO-命令"><a href="#Redis-GEO-命令" class="headerlink" title="Redis GEO 命令"></a>Redis GEO 命令</h5><p>【<code>GEOADD key longitude latitude member</code>】添加一个空间元素，这里具体业务就是 主播的经纬度和主播的Id。需要注意的是Redis的纬度有效范围不是<code>[-90,90]</code>而是<code>[-85,85]</code></p>
+<p>【<code>GEORADIUS key longitude latitude radius</code>】以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素。具体业务可以根据当前用户的用户的经纬度，搜索附近100km的主播。</p>
+<p>再有就是删除操作，<code>Redis GEO</code>结构的数据类型没有提供删除操作。不过我们可以直接使用【<code>ZREM key member</code>】这里的<code>member</code>就是主播Id。可以这样操作的原因是<code>Redis GEO</code> 数据类型内部的存储是<code>ZSet</code>结构。</p>
+<p>以上就是业务实现的主要操作。Redis更加详细的命令操作参考（<a href="http://redisdoc.com/geo/index.html）" target="_blank" rel="noopener">http://redisdoc.com/geo/index.html）</a><br>下面我们具体聊聊其中的原理。</p>
+<h5 id="Redis-GEO-原理"><a href="#Redis-GEO-原理" class="headerlink" title="Redis GEO 原理"></a>Redis GEO 原理</h5><p>讲<code>Redis GEO</code>实现之前需要先明白一些关于空间索引的算法<code>GEOHASH</code>的知识。针对索引我们日常所见都是一维的字符，那么如何对三维空间里面的坐标点建立索引呢，直接点就是三维变二维，二维变一维。</p>
+<p>地球纬度区间是<code>[-90,90]</code>,经度区间是<code>[-180,180]</code>。 将它展开想象成一个矩形。</p>
+<p><img src="/img/rectangle.png" align="center" width="80%" height="80%"></p>
+<p>通过上面的方法将地球的表面转换成二维空间的平面，那接下来就是如何将二维换行成一维了。我们先将平面切割成四个正方形，然后用简单的 01 编码来标识这个四个正方形，最后按照编码的大小将四个正方形连接起来，这样整个平面就转换成了一条Z曲线，变成了一维。我们递归对每个正方形做同样的操作，递归的层次越深，整个平面就逐渐被Z曲线填充。我们的点也会落在每个小正方形里面，小正方形越小，精度就越高。如下图所示:</p>
+<p><img src="/img/z.png" alt=""></p>
+<p>转成一维以后接下来就如何建立索引了。当我们拿到一个经纬度之后按照如下方式进行编码。</p>
+<p><img src="/img/lat.jpg" align="center" height="90%"></p>
+<p>从上面的图可以发现二分的次数越多就越接近经纬度的实际值，和前面提到的不断递归正方形是一个意思。按照上面的方式我们选定一个二分的深度（也就是精度）分别对经纬度进行编码。然后按照以<code>奇数为纬度，偶数为经度</code>组合成一个二进制序列，再将获取到的经纬度组合二进制序列以每5个数为一组，将每一组都进行转换成十进制数字，最后采用<code>Base32</code>对应编码规则进行转换可得到编码，也就是最后的索引。</p>
+<p><img src="/img/combina.jpg" align="center" width="90%"></p>
+<p>通过上面几个步骤介绍了一下<code>GeoHash</code>具体的流程、有了上面这个知识点，理解<code>Redis GEO</code>原理就很简单了，<code>Redis</code>使用<code>ZSet</code>的方式存储<code>Geo</code>类型的数据，有序集合里面的<code>member</code>是具体的业务对象，<code>score</code>就是该业务对象的经纬度进行<code>GeoHash</code>编码之后将二级制序列转成52位整数值数据。当我们想要获取某个经纬度附近的元素时候，先根据当前经纬度计算出对应的<code>GeoHash</code>块（52位整数值）,在根据半径计算出当前<code>hash</code>块周围的8个<code>hash</code>块，然后在根据score值获取这8个<code>hash</code>块范围内的元素返回。</p>
+<h5 id="GEO-HASH-延伸"><a href="#GEO-HASH-延伸" class="headerlink" title="GEO HASH 延伸"></a>GEO HASH 延伸</h5><p>对于一个经纬度，如果我们编码的时候选择对经度二分3次（3位二进制），对维度二分2次（2位二进制），最后组合成一个5位的二级进序列，经过<code>Base32</code>编码得到一个字符。那么这个字符的一共有2^5=32个，这样就将地图划分为32个块。如下图所示</p>
+<p><img src="/img/earth.jpg"></p>
+<p><code>GeoHash</code>将每一个区域画成一块块矩形块，每个矩形块使用一个字符串表示，当我们需要查询附近的点时，通过自己的坐标计算出一个字符串，根据这个字符串定位到我们所在的矩形块，然后返回这个矩形块中的点。然后根据编码的深度来确定精度，或者根据Base32编码之后字符的长度来确定块的所表示的区域大小。</p>
+<p><img src="/img/precision.jpg" align="center"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>length</th>
+<th>width</th>
+<th>height</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>5000km</td>
+<td>5000km</td>
+</tr>
+<tr>
+<td>2</td>
+<td>1250km</td>
+<td>625km</td>
+</tr>
+<tr>
+<td>3</td>
+<td>156km</td>
+<td>156km</td>
+</tr>
+<tr>
+<td>4</td>
+<td>39.1km</td>
+<td>19.5km</td>
+</tr>
+<tr>
+<td>5</td>
+<td>4.89km</td>
+<td>4.89km</td>
+</tr>
+<tr>
+<td>6</td>
+<td>1.22km</td>
+<td>0.61km</td>
+</tr>
+<tr>
+<td>7</td>
+<td>153m</td>
+<td>153m</td>
+</tr>
+<tr>
+<td>8</td>
+<td>38.2m</td>
+<td>19.1m</td>
+</tr>
+<tr>
+<td>9</td>
+<td>4.77m</td>
+<td>4.77m</td>
+</tr>
+<tr>
+<td>10</td>
+<td>1.19m</td>
+<td>0.596m</td>
+</tr>
+<tr>
+<td>11</td>
+<td>149mm</td>
+<td>149mm</td>
+</tr>
+<tr>
+<td>12</td>
+<td>37.2mm</td>
+<td>18.6mm</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>对于这样的编码方式有一定的局限性：<code>在拥有局部保序性的同时，具有突变性。导致一些邻近点真实并不是距离较近的点。</code></p>
+<h5 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h5><p><a href="http://geohash.gofreerange.com/" target="_blank" rel="noopener">http://geohash.gofreerange.com/</a><br><a href="https://halfrost.com/go_spatial_search/" target="_blank" rel="noopener">https://halfrost.com/go_spatial_search/</a><br><a href="https://www.cnblogs.com/LBSer/p/3310455.html" target="_blank" rel="noopener">https://www.cnblogs.com/LBSer/p/3310455.html</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#Redis-GEO-命令"><span class="toc-number">1.</span> <span class="toc-text">Redis GEO 命令</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Redis-GEO-原理"><span class="toc-number">2.</span> <span class="toc-text">Redis GEO 原理</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#GEO-HASH-延伸"><span class="toc-number">3.</span> <span class="toc-text">GEO HASH 延伸</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2019/06/25/RedisoGeo/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2019/06/25/RedisoGeo/&text=Redis GEO 详解"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2019/06/25/RedisoGeo/&is_video=false&description=Redis GEO 详解"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Redis GEO 详解&body=Check out this article: http://lty.com/2019/06/25/RedisoGeo/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2019/06/25/RedisoGeo/&title=Redis GEO 详解"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2019/06/25/RedisoGeo/&name=Redis GEO 详解&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2019/06/25/RedisoGeo/&t=Redis GEO 详解"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

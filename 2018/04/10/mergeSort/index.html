@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="归并排序 核心思想  归并排序是分治法的运用、所谓分治法就是将一个大问题分成一个个小的具有相同性质的问题。在归并排序中对于一个无序数组我们可以将数组先从中间分成两个数组然后对这两个数组进行排序。排序好了之后再将这两个有序的数组合并在一起。这个时候对于两个数组的排序就可以复用我们刚才的思想。 分的思想 治的思想 算法实现1234567891011121314151617181920212223242">
+<meta name="keywords" content="Arithmetic">
+<meta property="og:type" content="article">
+<meta property="og:title" content="归并排序">
+<meta property="og:url" content="http://lty.com/2018/04/10/mergeSort/index.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="归并排序 核心思想  归并排序是分治法的运用、所谓分治法就是将一个大问题分成一个个小的具有相同性质的问题。在归并排序中对于一个无序数组我们可以将数组先从中间分成两个数组然后对这两个数组进行排序。排序好了之后再将这两个有序的数组合并在一起。这个时候对于两个数组的排序就可以复用我们刚才的思想。 分的思想 治的思想 算法实现1234567891011121314151617181920212223242">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://lty.com/img/mergeSort-1.png">
+<meta property="og:image" content="http://lty.com/img/mergeSort-2.png">
+<meta property="og:image" content="http://lty.com/img/mergeSort-3.png">
+<meta property="og:updated_time" content="2024-08-01T02:14:50.419Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="归并排序">
+<meta name="twitter:description" content="归并排序 核心思想  归并排序是分治法的运用、所谓分治法就是将一个大问题分成一个个小的具有相同性质的问题。在归并排序中对于一个无序数组我们可以将数组先从中间分成两个数组然后对这两个数组进行排序。排序好了之后再将这两个有序的数组合并在一起。这个时候对于两个数组的排序就可以复用我们刚才的思想。 分的思想 治的思想 算法实现1234567891011121314151617181920212223242">
+<meta name="twitter:image" content="http://lty.com/img/mergeSort-1.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>归并排序</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2018/05/29/redis-store/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2017/08/21/Linux远程登录/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2018/04/10/mergeSort/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2018/04/10/mergeSort/&text=归并排序"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2018/04/10/mergeSort/&is_video=false&description=归并排序"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=归并排序&body=Check out this article: http://lty.com/2018/04/10/mergeSort/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2018/04/10/mergeSort/&name=归并排序&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2018/04/10/mergeSort/&t=归并排序"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心思想"><span class="toc-number">1.</span> <span class="toc-text">核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分的思想"><span class="toc-number">1.1.</span> <span class="toc-text">分的思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#治的思想"><span class="toc-number">1.2.</span> <span class="toc-text">治的思想</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法实现"><span class="toc-number">2.</span> <span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        归并排序
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">像个孩子壹洋</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2018-04-10T07:11:15.000Z" class="dt-published" itemprop="datePublished">2018-04-10</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/Arithmetic/">Arithmetic</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>归并排序</p>
+<h2 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h2><p>  归并排序是分治法的运用、所谓分治法就是将一个大问题分成一个个小的具有相同性质的问题。在归并排序中对于一个无序数组我们可以将数组先从中间分成两个数组然后对这两个数组进行排序。排序好了之后再将这两个有序的数组合并在一起。这个时候对于两个数组的排序就可以复用我们刚才的思想。</p>
+<h3 id="分的思想"><a href="#分的思想" class="headerlink" title="分的思想"></a>分的思想</h3><p><img src="/img/mergeSort-1.png" alt=""></p>
+<h3 id="治的思想"><a href="#治的思想" class="headerlink" title="治的思想"></a>治的思想</h3><p><img src="/img/mergeSort-2.png" alt=""><br><img src="/img/mergeSort-3.png" alt=""></p>
+<h2 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MergeSort</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> []arr = &#123;<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>&#125;;</span><br><span class="line">        sort(arr);</span><br><span class="line">        System.out.println(Arrays.toString(arr));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span> []arr)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> []temp = <span class="keyword">new</span> <span class="keyword">int</span>[arr.length];<span class="comment">//在排序前，先建好一个长度等于原数组长度的临时数组，避免递归中频繁开辟空间</span></span><br><span class="line">        sort(arr,<span class="number">0</span>,arr.length-<span class="number">1</span>,temp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span> left,<span class="keyword">int</span> right,<span class="keyword">int</span> []temp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(left&lt;right)&#123;</span><br><span class="line">            <span class="keyword">int</span> mid = (left+right)/<span class="number">2</span>;</span><br><span class="line">            sort(arr,left,mid,temp);<span class="comment">//左边归并排序，使得左子序列有序</span></span><br><span class="line">            sort(arr,mid+<span class="number">1</span>,right,temp);<span class="comment">//右边归并排序，使得右子序列有序</span></span><br><span class="line">            merge(arr,left,mid,right,temp);<span class="comment">//将两个有序子数组合并操作</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(<span class="keyword">int</span>[] arr,<span class="keyword">int</span> left,<span class="keyword">int</span> mid,<span class="keyword">int</span> right,<span class="keyword">int</span>[] temp)</span></span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = left;<span class="comment">//左序列指针</span></span><br><span class="line">        <span class="keyword">int</span> j = mid+<span class="number">1</span>;<span class="comment">//右序列指针</span></span><br><span class="line">        <span class="keyword">int</span> t = <span class="number">0</span>;<span class="comment">//临时数组指针</span></span><br><span class="line">        <span class="keyword">while</span> (i&lt;=mid &amp;&amp; j&lt;=right)&#123;</span><br><span class="line">            <span class="keyword">if</span>(arr[i]&lt;=arr[j])&#123;</span><br><span class="line">                temp[t++] = arr[i++];</span><br><span class="line">            &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">                temp[t++] = arr[j++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(i&lt;=mid)&#123;<span class="comment">//将左边剩余元素填充进temp中</span></span><br><span class="line">            temp[t++] = arr[i++];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(j&lt;=right)&#123;<span class="comment">//将右序列剩余元素填充进temp中</span></span><br><span class="line">            temp[t++] = arr[j++];</span><br><span class="line">        &#125;</span><br><span class="line">        t = <span class="number">0</span>;</span><br><span class="line">        <span class="comment">//将temp中的元素全部拷贝到原数组中</span></span><br><span class="line">        <span class="keyword">while</span>(left &lt;= right)&#123;</span><br><span class="line">            arr[left++] = temp[t++];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>  归并排序是一种稳定的排序、时间复杂度为O(nlogn)。在Java中我们常用Arrays.sort()内部使用的是TimeSort的排序方式。TimeSort是对归并排序的一种优化。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://bubkoo.com/2014/01/15/sort-algorithm/merge-sort/" target="_blank" rel="noopener">http://bubkoo.com/2014/01/15/sort-algorithm/merge-sort/</a></p>
+<p><a href="https://www.cnblogs.com/chengxiao/p/6194356.html" target="_blank" rel="noopener">https://www.cnblogs.com/chengxiao/p/6194356.html</a></p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#核心思想"><span class="toc-number">1.</span> <span class="toc-text">核心思想</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分的思想"><span class="toc-number">1.1.</span> <span class="toc-text">分的思想</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#治的思想"><span class="toc-number">1.2.</span> <span class="toc-text">治的思想</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法实现"><span class="toc-number">2.</span> <span class="toc-text">算法实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">4.</span> <span class="toc-text">参考</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2018/04/10/mergeSort/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2018/04/10/mergeSort/&text=归并排序"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2018/04/10/mergeSort/&is_video=false&description=归并排序"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=归并排序&body=Check out this article: http://lty.com/2018/04/10/mergeSort/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2018/04/10/mergeSort/&title=归并排序"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2018/04/10/mergeSort/&name=归并排序&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2018/04/10/mergeSort/&t=归并排序"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

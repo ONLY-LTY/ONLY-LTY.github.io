@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="MySQL 闲杂知识点 1. MySQL concat&amp;emsp;&amp;emsp;我们使用MySQL中的concat链接字符串函数的时候，如果链接的字段中有一个NULL值的话，我们最后出来的结果就是NULL，显然这不是我们想要的。我们可以使用coalesce函数来对NULL值初始化。 12345SELECT `atfcapi`.`tb_api_trace`.`git_version`,       c">
+<meta name="keywords" content="MySQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql杂谈">
+<meta property="og:url" content="http://lty.com/2016/11/19/MySql杂谈/index.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="MySQL 闲杂知识点 1. MySQL concat&amp;emsp;&amp;emsp;我们使用MySQL中的concat链接字符串函数的时候，如果链接的字段中有一个NULL值的话，我们最后出来的结果就是NULL，显然这不是我们想要的。我们可以使用coalesce函数来对NULL值初始化。 12345SELECT `atfcapi`.`tb_api_trace`.`git_version`,       c">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2024-08-01T07:20:09.640Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MySql杂谈">
+<meta name="twitter:description" content="MySQL 闲杂知识点 1. MySQL concat&amp;emsp;&amp;emsp;我们使用MySQL中的concat链接字符串函数的时候，如果链接的字段中有一个NULL值的话，我们最后出来的结果就是NULL，显然这不是我们想要的。我们可以使用coalesce函数来对NULL值初始化。 12345SELECT `atfcapi`.`tb_api_trace`.`git_version`,       c">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>MySql杂谈</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2016/11/24/Spring-bean/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2016/11/16/Jvm-Classloader/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2016/11/19/MySql杂谈/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2016/11/19/MySql杂谈/&text=MySql杂谈"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2016/11/19/MySql杂谈/&is_video=false&description=MySql杂谈"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySql杂谈&body=Check out this article: http://lty.com/2016/11/19/MySql杂谈/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2016/11/19/MySql杂谈/&name=MySql杂谈&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2016/11/19/MySql杂谈/&t=MySql杂谈"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-MySQL-concat"><span class="toc-number">1.</span> <span class="toc-text">1. MySQL concat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-MySQL-查询当天数据"><span class="toc-number">2.</span> <span class="toc-text">2. MySQL 查询当天数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-MySQL-count-count-1-count-列名"><span class="toc-number">3.</span> <span class="toc-text">3. MySQL count(*) count(1) count([列名])</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        MySql杂谈
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">像个孩子壹洋</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-19T03:06:51.000Z" class="dt-published" itemprop="datePublished">2016-11-19</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/MySQL/">MySQL</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>MySQL 闲杂知识点</p>
+<h2 id="1-MySQL-concat"><a href="#1-MySQL-concat" class="headerlink" title="1. MySQL concat"></a>1. MySQL concat</h2><p>&emsp;&emsp;我们使用MySQL中的concat链接字符串函数的时候，如果链接的字段中有一个NULL值的话，我们最后出来的结果就是NULL，显然这不是我们想要的。我们可以使用coalesce函数来对NULL值初始化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT `atfcapi`.`tb_api_trace`.`git_version`,</span><br><span class="line">       concat(&apos;Request: &apos;,coalesce(`atfcapi`.`tb_api_trace`.`parameters_change_list`,&apos;&apos;),&apos;\nResponse: &apos;,coalesce(`atfcapi`.`tb_api_trace`.`responses_change_list`,&apos;&apos;)) AS `change`</span><br><span class="line">FROM `atfcapi`.`tb_api_trace`</span><br><span class="line">WHERE `atfcapi`.`tb_api_trace`.`tb_pathid` = 4217</span><br><span class="line">ORDER BY `atfcapi`.`tb_api_trace`.`updated_at` DESC</span><br></pre></td></tr></table></figure>
+<p>具体可以参考 <a href="http://stackoverflow.com/questions/8530632/concat-values-in-mysql-queryto-handle-null-values" target="_blank" rel="noopener">http://stackoverflow.com/questions/8530632/concat-values-in-mysql-queryto-handle-null-values</a></p>
+<h2 id="2-MySQL-查询当天数据"><a href="#2-MySQL-查询当天数据" class="headerlink" title="2. MySQL 查询当天数据"></a>2. MySQL 查询当天数据</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM TABLE</span><br><span class="line">WHERE date(TIME) = curdate();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT *</span><br><span class="line">FROM TABLE</span><br><span class="line">WHERE TO_DAYS(TIME) = TO_DAYS(NOW())</span><br></pre></td></tr></table></figure>
+<h2 id="3-MySQL-count-count-1-count-列名"><a href="#3-MySQL-count-count-1-count-列名" class="headerlink" title="3. MySQL count(*) count(1) count([列名])"></a>3. MySQL count(*) count(1) count([列名])</h2><p>&emsp;&emsp;Count(1)和Count(*)实际上的意思是，评估Count（）中的表达式是否为NULL，如果为NULL则不计数，而非NULL则会计数。比如我们看如下代码所示，在Count中指定NULL（优化器不允许显式指定NULL，因此需要赋值给变量才能指定）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DECLARE @x3x INT</span><br><span class="line">SET @x3x=NULL</span><br><span class="line">SELECT COUNT(@x3x) FROM TableName</span><br></pre></td></tr></table></figure></p>
+<p>因此当你指定Count(*） 或者Count（1）或者无论Count(‘anything’)时结果都会一样，因为这些值都不为NULL。对于Count（列）来说，同样适用于上面规则，评估列中每一行的值是否为NULL，如果为NULL则不计数，不为NULL则计数。因此Count（列）会计算列或这列的组合不为空的计数。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-MySQL-concat"><span class="toc-number">1.</span> <span class="toc-text">1. MySQL concat</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-MySQL-查询当天数据"><span class="toc-number">2.</span> <span class="toc-text">2. MySQL 查询当天数据</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-MySQL-count-count-1-count-列名"><span class="toc-number">3.</span> <span class="toc-text">3. MySQL count(*) count(1) count([列名])</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2016/11/19/MySql杂谈/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2016/11/19/MySql杂谈/&text=MySql杂谈"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2016/11/19/MySql杂谈/&is_video=false&description=MySql杂谈"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=MySql杂谈&body=Check out this article: http://lty.com/2016/11/19/MySql杂谈/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2016/11/19/MySql杂谈/&title=MySql杂谈"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2016/11/19/MySql杂谈/&name=MySql杂谈&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2016/11/19/MySql杂谈/&t=MySql杂谈"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

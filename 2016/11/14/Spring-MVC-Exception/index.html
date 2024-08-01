@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Spring MVC 全局异常处理 &amp;emsp;&amp;emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。123456789101112131415161718192021222324252627282930313233343536373839404142public class BaseExc">
+<meta name="keywords" content="Spring,MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC Exception">
+<meta property="og:url" content="http://lty.com/2016/11/14/Spring-MVC-Exception/index.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="Spring MVC 全局异常处理 &amp;emsp;&amp;emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。123456789101112131415161718192021222324252627282930313233343536373839404142public class BaseExc">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2024-08-01T02:14:50.415Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC Exception">
+<meta name="twitter:description" content="Spring MVC 全局异常处理 &amp;emsp;&amp;emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。123456789101112131415161718192021222324252627282930313233343536373839404142public class BaseExc">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Spring MVC Exception</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="目录"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="顶部" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="上一篇" href="/2016/11/16/Jvm-Classloader/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="下一篇" href="/2016/11/14/Reflect-Proxy/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="返回顶部" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="分享文章" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2016/11/14/Spring-MVC-Exception/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&text=Spring MVC Exception"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&is_video=false&description=Spring MVC Exception"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Spring MVC Exception&body=Check out this article: http://lty.com/2016/11/14/Spring-MVC-Exception/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&name=Spring MVC Exception&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2016/11/14/Spring-MVC-Exception/&t=Spring MVC Exception"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Spring MVC Exception
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">像个孩子壹洋</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2016-11-14T11:04:09.000Z" class="dt-published" itemprop="datePublished">2016-11-14</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/MVC/">MVC</a>, <a class="[object Object]-link" href="/tags/Spring/">Spring</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <p>Spring MVC 全局异常处理</p>
+<p>&emsp;&emsp;当我们用Sping MVC的时候,可以对Controller层的接口进行全局异常处理。那样就不用每个接口try catch了。只需要继承这个类就好了。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>  <span class="keyword">static</span> <span class="keyword">final</span> Log LOGGER = LogFactory.getLog(BaseExceptionHandler.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(NoHandlerFoundException.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.NOT_FOUND)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">handle404Error</span><span class="params">(HttpServletRequest request, Throwable e)</span></span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"@NoHandlerFound Path [&#123;&#125;]  &#123;&#125;"</span>,request.getRequestURI(),e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"400"</span>,e.getMessage(),<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(ServerException.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.INTERNAL_SERVER_ERROR)</span><br><span class="line">    <span class="function"><span class="keyword">public</span> ResponseEntity <span class="title">handleError</span><span class="params">(HttpServletRequest request,Throwable e)</span></span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"@Controller Path [&#123;&#125;]  Method [&#123;&#125;]"</span>,request.getRequestURI(),request.getMethod());</span><br><span class="line">        LOGGER.error(<span class="string">"@Error - "</span>,e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"4001"</span>,<span class="string">"处理错误 | 错误原因 "</span>+e.getMessage(),<span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(value = &#123;MethodArgumentNotValidException.class, BindException.class&#125;)</span><br><span class="line">    <span class="function">ResponseEntity <span class="title">handleMethodArgumentNotValidException</span><span class="params">(HttpServletRequest request, Exception e)</span> </span>&#123;</span><br><span class="line">        String message = <span class="string">"参数异常,"</span>;</span><br><span class="line">        <span class="keyword">if</span> (e <span class="keyword">instanceof</span> MethodArgumentNotValidException) &#123;</span><br><span class="line">            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) e;</span><br><span class="line">            message = message + exception.getBindingResult().getFieldError().getDefaultMessage();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (e <span class="keyword">instanceof</span> BindException) &#123;</span><br><span class="line">            BindException exception = (BindException) e;</span><br><span class="line">            message = message + exception.getBindingResult().getFieldError().getDefaultMessage();</span><br><span class="line">        &#125;</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Check Argument ErrorMsg:[&#123;&#125;] Path:[&#123;&#125;]"</span>, message, request.getRequestURI());</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Check Argument Error - "</span>, e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"4001"</span>, message, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@ExceptionHandler</span>(Exception.class)</span><br><span class="line">    <span class="meta">@ResponseStatus</span>(HttpStatus.INTERNAL_SERVER_ERROR)</span><br><span class="line">    <span class="function">ResponseEntity <span class="title">handleControllerException</span><span class="params">(HttpServletRequest request, Throwable th)</span> </span>&#123;</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Path:[&#123;&#125;]"</span>, request.getRequestURI());</span><br><span class="line">        LOGGER.error(<span class="string">"Controller Error - "</span>, th);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ResponseEntity&lt;&gt;(<span class="string">"500"</span>, <span class="string">"操作错误,请稍后再试"</span>, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<hr>
+<p align="center"><font color="blue">没有人不爱惜他的生命，但很少人珍视他的时间。</font></p><p align="right">——梁实秋</p>
+
+<hr>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">首页</a></li>
+        
+          <li><a href="/archives/">归档</a></li>
+        
+          <li><a href="/tags/">标签</a></li>
+        
+          <li><a href="/about/">关于</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2016/11/14/Spring-MVC-Exception/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&text=Spring MVC Exception"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&is_video=false&description=Spring MVC Exception"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Spring MVC Exception&body=Check out this article: http://lty.com/2016/11/14/Spring-MVC-Exception/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&title=Spring MVC Exception"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2016/11/14/Spring-MVC-Exception/&name=Spring MVC Exception&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2016/11/14/Spring-MVC-Exception/&t=Spring MVC Exception"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"复制到粘贴板！\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "复制成功！");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

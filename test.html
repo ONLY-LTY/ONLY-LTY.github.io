@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Document                   * {             margin: 0;             padding: 0;         }         body {             background: #ddd;         }         .box {             padding: 20px;">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LTY&#39;s Blog">
+<meta property="og:url" content="http://lty.com/test.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="Document                   * {             margin: 0;             padding: 0;         }         body {             background: #ddd;         }         .box {             padding: 20px;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2024-08-01T02:14:50.450Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LTY&#39;s Blog">
+<meta name="twitter:description" content="Document                   * {             margin: 0;             padding: 0;         }         body {             background: #ddd;         }         .box {             padding: 20px;">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>LTY&#39;s Blog</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+    <div class="content index py4 ">
+        
+          <header id="header">
+  <a class="u-url u-uid" href="/">
+  
+    
+      <img id="logo" alt class="u-logo" src="/images/logo.png" />
+    
+  
+    <div id="title">
+      <h1 class="p-name">LTY&#39;s Blog</h1>
+    </div>
+  </a>
+  <div id="nav">
+    <ul>
+      <li class="icon">
+        <a href="#" aria-label="目录"><i class="fa-solid fa-bars fa-2x"></i></a>
+      </li>
+      <!--
+     --><li><a href="/">首页</a></li><!--
+   --><!--
+     --><li><a href="/archives/">归档</a></li><!--
+   --><!--
+     --><li><a href="/tags/">标签</a></li><!--
+   --><!--
+     --><li><a href="/about/">关于</a></li><!--
+   -->
+    </ul>
+  </div>
+</header>
+
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  
+
+  <div class="content" itemprop="articleBody">
+      
+          <!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <title>Document</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background: #ddd;
+        }
+        .box {
+            padding: 20px;
+            font-size: 16px;
+        }
+        input {
+            background: #fff;
+            border: none;
+            height: 35px;
+            padding: 5px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        .phone input {
+            width: 100%;
+        }
+        .code {
+            margin-top: 10px;
+        }
+        .code input {
+            display: inline-block;
+            width: 60%;
+        }
+        .code button {
+            display: inline-block;
+            width: 40%;
+            height: 35px;
+            margin-left: -4px;
+            margin-top: 0;
+        }
+        button {
+            background: #1e89e0;
+            color: #fff;
+            border: none;
+            outline: none;
+            width: 100%;
+            margin-top: 10px;
+            height: 35px;
+        }
+        .disabled {
+            background: #c1c1c1;
+        }
+    </style><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head>
+<body>
+
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="box">
+    <div class="phone">
+        <input type="text" id="phone" placeholder="请输入手机号">
+    </div>
+    <div class="code">
+        <input type="text" id="code" placeholder="请输入验证码">
+        <button id="deliver">发送验证码</button>
+    </div>
+    <button id="login">登录</button>
+</div>
+<script>
+    var btnDeliver = document.getElementById('deliver');
+    var btnLogin = document.getElementById("login");
+    var time = 60;
+    function timeHandle() {
+        time --;
+        btnDeliver.innerHTML = time + 's';
+        if (time <= 0) {
+            btnDeliver.className = '';
+            btnDeliver.innerHTML = '发送验证码';
+            time = 60;
+            return;
+        }
+        setTimeout(timeHandle, 1000);
+
+    }
+    btnDeliver.onclick = function() {
+        sendSms();
+    };
+    btnLogin.onclick = function () {
+        validCode();
+    };
+
+    var number = Math.round(900000*Math.random()+100000);
+    var content = "【测试】您的验证码为 "+number;
+
+    function sendSms() {
+        var phone = document.getElementById("phone").value;
+        if(phone == ""){
+            alert("请输入手机号");
+            return;
+        }
+        limit();
+        doPost(phone)
+    }
+
+    function doPost(phone) {
+        var xmlHttp;
+        if(window.ActiveXObject){
+            xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }else if(window.XMLHttpRequest) {
+            xmlHttp = new XMLHttpRequest();
+        }
+        xmlHttp.open("POST","https://api.submail.cn/message/send.json");
+        xmlHttp.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+        xmlHttp.setRequestHeader("Accept","json");
+        xmlHttp.send("appid=12340&to"+phone+"&content="+content+"&signature=a55283ce1436bc2515b29b533a4b1f49");
+        xmlHttp.onreadystatechange=function(){
+            if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+                alert(xmlHttp.responseText);
+            }else{
+                alert('fail');
+            }
+        }
+    }
+    function limit() {
+        if (this.className === 'disabled') return false;
+        this.className = 'disabled';
+        timeHandle();
+    }
+    function validCode() {
+        var phone = document.getElementById("code").value;
+        if(code == ""){
+            alert("请输入验证码");
+            return;
+        }
+        if(code == number){
+            alert(document.getElementById("phone").value)
+        }else{
+            alert("验证码错误");
+        }
+    }
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</body>
+</html>
+
+        
+  </div>
+</article>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">首页</a></li><!--
+     --><!--
+       --><li><a href="/archives/">归档</a></li><!--
+     --><!--
+       --><li><a href="/tags/">标签</a></li><!--
+     --><!--
+       --><li><a href="/about/">关于</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
