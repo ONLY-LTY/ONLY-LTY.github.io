@@ -6,23 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <meta name="description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计 &amp;gt;  Clust">
+    <meta name="description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计  Cluster:">
 <meta name="keywords" content="Redis,分布式">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Redis 分布式存储">
 <meta property="og:url" content="http://lty.com/2018/05/29/redis-store/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
-<meta property="og:description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计 &amp;gt;  Clust">
+<meta property="og:description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计  Cluster:">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="http://lty.com/img/Redis分布式.png">
 <meta property="og:image" content="http://lty.com/img/zknode.png">
 <meta property="og:image" content="http://lty.com/img/uml.png">
 <meta property="og:image" content="http://lty.com/img/flow.png">
 <meta property="og:image" content="http://lty.com/img/rehash.png">
-<meta property="og:updated_time" content="2024-08-01T02:14:50.420Z">
+<meta property="og:updated_time" content="2024-08-19T06:16:19.856Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Redis 分布式存储">
-<meta name="twitter:description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计 &amp;gt;  Clust">
+<meta name="twitter:description" content="Redis 分布式路由中间件 入职公司不久、发现各种业务强依赖Redis以至于公司研发了Redis分布式存储路由中间件、经过一段时间的源码学习总结一下。 先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）  概述Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。 节点类型设计  Cluster:">
 <meta name="twitter:image" content="http://lty.com/img/Redis分布式.png">
     
     
@@ -180,7 +180,6 @@
 <p><img src="/img/Redis分布式.png" alt=""></p>
 <h5 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h5><p>Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。</p>
 <h5 id="节点类型设计"><a href="#节点类型设计" class="headerlink" title="节点类型设计"></a>节点类型设计</h5><p><img src="/img/zknode.png" alt=""></p>
-<p>&gt;</p>
 <ul>
 <li>Cluster:  集群名称（对应业务名称）、每一个业务是一个独立的Cluster结构。zk根节点是[/clusters]。</li>
 <li>Node:     数据的逻辑分区、可以理解为分片。</li>
