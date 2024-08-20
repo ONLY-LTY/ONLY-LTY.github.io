@@ -275,12 +275,12 @@
 <script type="math/tex; mode=display">p = (p_1,p_2,p_3,...,p_n)</script><script type="math/tex; mode=display">q = (q_1,q_2,q_3,...,q_n)</script><h5 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h5><p>欧式距离是一个欧式空间下度量距离的的方法。两个物体在同一空间下表示为两个点，假如叫做 p 和 q，分别都是 n 个坐标（即就是 n 维）。</p>
 <script type="math/tex; mode=display">E(p,q) = \sqrt{\sum_{i=1}^{n}(p_i - q_i)^2}</script><p>显然，欧式距离得到的值是一个非负数，最大值是正无穷。一般相似度的度量结果希望是[-1,1] 或者 [0,1] 之间的，所以这个公式无法在正常的场景中使用，需要做个转换。</p>
 <script type="math/tex; mode=display">similar = \frac{1}{1 + E(p,q)}</script><p>上面这个公式把 0 到正无穷的欧式距离转换成 0 到 1 的相似度。</p>
-<p><code>欧式距离度量的是空间两个点的绝对差异，适用于分析用户能力模型之间的差异，比如消费能力，贡献能力</code>。</p>
+<p><strong>欧式距离度量的是空间两个点的绝对差异，适用于分析用户能力模型之间的差异，比如消费能力，贡献能力</strong>。</p>
 <h5 id="余弦相似度"><a href="#余弦相似度" class="headerlink" title="余弦相似度"></a>余弦相似度</h5><p>余弦相似度度量的是两个向量之间的夹角，也就是夹角的余弦值。当两个向量的夹角为 0 度时，余弦值为 1，当夹角为 90 度时，余弦值为0，夹角为 180度时，余弦值为 -1。取值的范围为[-1,1]。</p>
-<script type="math/tex; mode=display">cos(p,q) = \frac{\sum_{i}p_iq_i}{\sqrt{\sum_{i}p_i^2}\sqrt{\sum_{i}q_i^2}}</script><p>余弦相似度的特点：<code>它和向量的长度无关，两个向量，只要方向一致，无论程度强弱，都可以认为是相似的</code>。在协同过滤中，余弦相似度某种程度上更加依赖两个物品的共同评价用户数，而不是用户给予的评分多少，这就是余弦相似度被向量长度归一化后的结果。比如这样的一个例子，用户A对两部电影的评分分别是 1 分和 2分，用户B对同样的两部电影评分分别是 4 分和 5 分，通过余弦相似度计算的出来的结果达到0.98。这和实际的直觉不符合，明明用户A不喜欢这两部电影。针对这个问题，余弦相似度有个改进，就是先计算向量每个维度的均值，然后每个向量在各个维度都减去均值后在计算余弦值。 </p>
-<p><code>余弦相似度在度量文本相似度、用户相似度、物品相似度的时候比较常用。</code></p>
+<script type="math/tex; mode=display">cos(p,q) = \frac{\sum_{i}p_iq_i}{\sqrt{\sum_{i}p_i^2}\sqrt{\sum_{i}q_i^2}}</script><p>余弦相似度的特点：<strong>它和向量的长度无关，两个向量，只要方向一致，无论程度强弱，都可以认为是相似的</strong>。在协同过滤中，余弦相似度某种程度上更加依赖两个物品的共同评价用户数，而不是用户给予的评分多少，这就是余弦相似度被向量长度归一化后的结果。比如这样的一个例子，用户A对两部电影的评分分别是 1 分和 2分，用户B对同样的两部电影评分分别是 4 分和 5 分，通过余弦相似度计算的出来的结果达到0.98。这和实际的直觉不符合，明明用户A不喜欢这两部电影。针对这个问题，余弦相似度有个改进，就是先计算向量每个维度的均值，然后每个向量在各个维度都减去均值后在计算余弦值。</p>
+<p><strong>余弦相似度在度量文本相似度、用户相似度、物品相似度的时候比较常用。</strong></p>
 <h5 id="皮尔逊相关度"><a href="#皮尔逊相关度" class="headerlink" title="皮尔逊相关度"></a>皮尔逊相关度</h5><p>皮尔逊相关度本质上也是一种余弦相似度，不对是先对向量做了中心化，向量 p 和 q 各自减去向量的均值后，在计算余弦相似度。</p>
-<script type="math/tex; mode=display">R(p,q) = \frac{\sum_{i=1}^{n}(p_i - \bar p)(q_i - \bar q)}{\sqrt{\sum_{i=1}^{n}(p_i-\bar p)^2}\sqrt{\sum_{i=1}^{n}(p_i-\bar p)^2}}</script><p>这里需要注意的是和上面的余弦相似度优化算法不一样的是<code>前者是对列向量中心化，后者是对行向量中心化</code>。皮尔逊相关度度量的是两个随机变量是不是在同增同减。变化趋势是否一致，所以不是适合用作计算布尔值向量之间的相关度，因为两个布尔值向量也就是对应两个0-1分布的随机变量，这样的随机变量的变化只有0和1两个值，也就没有变化趋势这一说。</p>
+<script type="math/tex; mode=display">R(p,q) = \frac{\sum_{i=1}^{n}(p_i - \bar p)(q_i - \bar q)}{\sqrt{\sum_{i=1}^{n}(p_i-\bar p)^2}\sqrt{\sum_{i=1}^{n}(p_i-\bar p)^2}}</script><p>这里需要注意的是和上面的余弦相似度优化算法不一样的是<strong>前者是对列向量中心化，后者是对行向量中心化</strong>。皮尔逊相关度度量的是两个随机变量是不是在同增同减。变化趋势是否一致，所以不是适合用作计算布尔值向量之间的相关度，因为两个布尔值向量也就是对应两个0-1分布的随机变量，这样的随机变量的变化只有0和1两个值，也就没有变化趋势这一说。</p>
 <h5 id="杰卡德（Jaccard）相似度"><a href="#杰卡德（Jaccard）相似度" class="headerlink" title="杰卡德（Jaccard）相似度"></a>杰卡德（Jaccard）相似度</h5><p>杰卡德相似度是两个集合的交接元素个数在并集中所占比例，非常实用与布尔值向量计算，比如用户之间的收藏行为。</p>
 <script type="math/tex; mode=display">J(A,B) = \frac{|A \bigcap B|}{|A \bigcup B|}</script>]]></content>
       <tags>
@@ -382,18 +382,18 @@
 <p>先来一张大的思维导图（PS:思维导图真的对我们理解总结很有帮助）</p>
 <p><img src="/img/Redis分布式.png" alt=""></p>
 <h5 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h5><p>Redis-Store是基于客户端的分布式存储路由中间件。本地从zookeeper配置中拉取和监听Redis配置信息、根据策略自动路由。</p>
-<h5 id="节点类型设计"><a href="#节点类型设计" class="headerlink" title="节点类型设计"></a>节点类型设计</h5><p><img src="/img/zknode.png" alt=""></p>
+<h5 id="节点类型设计"><a href="#节点类型设计" class="headerlink" title="节点类型设计"></a>节点类型设计</h5><p><img src="/img/zknode.jpg" alt=""></p>
 <ul>
 <li>Cluster:  集群名称（对应业务名称）、每一个业务是一个独立的Cluster结构。zk根节点是[/clusters]。</li>
 <li>Node:     数据的逻辑分区、可以理解为分片。</li>
 <li>Instance：实际的Redis实例、由一小组主从结构构成。</li>
 </ul>
-<h5 id="节点数据设计"><a href="#节点数据设计" class="headerlink" title="节点数据设计"></a>节点数据设计</h5><p><img src="/img/uml.png" alt=""></p>
-<h5 id="路由流程设计"><a href="#路由流程设计" class="headerlink" title="路由流程设计"></a>路由流程设计</h5><p><img src="/img/flow.png" alt=""></p>
+<h5 id="节点数据设计"><a href="#节点数据设计" class="headerlink" title="节点数据设计"></a>节点数据设计</h5><p><img src="/img/cluster.jpg" alt=""></p>
+<h5 id="路由流程设计"><a href="#路由流程设计" class="headerlink" title="路由流程设计"></a>路由流程设计</h5><p><img src="/img/flow.jpg" alt=""></p>
 <p>客户端请求的如何落到具体的实例上面。针对原有的Redis客户端、将所有的方法的第一个参数设置为hashKey、后续的处理的根据hash选择Node、根据读写策略获取Master实例还是Slave实例进行具体的读写。比如一个简单的场景，我们初始化了10个分片也就是10个Node节点，每个节点下面一主两从实例。配置Cluster的Hash策略为简单的取模运算。当我们以用户的Id为haskKey进行路由的话，根据用户Id的最后一位数字能确定我们的请求到具体哪个Node，在进行写入的操作的时候请求落到Master实例上面，在进行读操作的时候请求会落到Slave实例上面（当然这是简单的读写策略）。</p>
 <p>上面流程中第一步是根据hashKey获取Node。也就是根据hash算法得到我们的请求应该分配到那个分片上面。这个根据不同的业务场景会有不同的设计、有简单的取模哈希、有适应分布式的一致性哈希、有区域哈希、有前缀哈希等等。不能说那种算法最好，使用适合自己业务的。</p>
 <p>上面流程中第二步是根据读写策略获取具体的Instance了。一个Node下面是一个小的实例集群，根据自己的业务的需求可以自定义，一般的都是一主两从。如果是写入操作的话获取Master实例、如果是读操作的可以Master读、可以Slave读、可以随机读等等。</p>
-<h5 id="集群节点变更设计"><a href="#集群节点变更设计" class="headerlink" title="集群节点变更设计"></a>集群节点变更设计</h5><p><img src="/img/rehash.png" alt=""></p>
+<h5 id="集群节点变更设计"><a href="#集群节点变更设计" class="headerlink" title="集群节点变更设计"></a>集群节点变更设计</h5><p><img src="/img/rehash.jpg" alt=""></p>
 <ul>
 <li>集群信息变更两个阶段的提交ACK和FINISH</li>
 <li>减少集群变更对数据一致性的影响</li>
