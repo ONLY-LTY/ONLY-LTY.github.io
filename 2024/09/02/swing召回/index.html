@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="LTY&#39;s Blog">
 <meta property="og:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2024-09-02T11:38:03.733Z">
+<meta property="og:updated_time" content="2024-09-02T11:41:28.602Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="swing召回">
 <meta name="twitter:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
@@ -177,11 +177,11 @@
 <li>$U_i$表示喜欢物品$i$的用户集合，$U_j$表示喜欢物品$j$的用户集合，$I_u$表示用户$u$喜欢的item集合，$I_v$表示用户$v$喜欢的item集合。</li>
 <li>公式中有两个$\sum$求和符号，表示的是在同时喜欢物品$i$和$j$的用户集合内两两取$pair$，因此分子的1可以理解为表示一个用户$pair(u,v)$。</li>
 <li>分母中的$I_u$和$I_v$交集的用来表示用户$u$和$v$之间的相似度，等于两个用户共同点击的item数量。这个值越高，说明两个用户的重合度越高，就要降低它的贡献度。</li>
-<li>分母中的$\alpha$是一个平滑项，可以避免分母为零，可以取一个较小的正数，例如1。<blockquote>
+<li>分母中的$\alpha$是一个平滑项，可以避免分母为零，可以取一个较小的正数，例如1。</li>
+</ol>
+<blockquote>
 <p>swing的直觉来源是：如果大量用户同时喜欢两个物品，且这些用户之间的相关性低，那么这两个物品一定是强关联（相似）</p>
 </blockquote>
-</li>
-</ol>
 <h2 id="传统icf与swing的异同点"><a href="#传统icf与swing的异同点" class="headerlink" title="传统icf与swing的异同点"></a>传统icf与swing的异同点</h2><p>比较传统icf和swing的相似度定义公式，可以看到，两者的共同点是都通过同时喜欢物品$i$和$j$的用户规模来表达相似度，共同喜欢两个物品的用户量越大，物品间的相似度越高。区别是，swing还考虑了用户之间的重合度，不仅希望用户交集的规模大，且要多样性好。<br>用一句话来分别概括传统icf和swing的特点：<br>传统icf：如果同时喜欢两个物品的用户越多，那么这两个物品间的相似度越高。<br>swing：如果同时喜欢两个物品的用户越多，且这些用户之间的重合度越低，那么这两个物品间的相似度越高。</p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><em><a href="/pdf/swing.pdf">[1]</a></em> Large Scale Product Graph Construction for Recommendation in E-commerce</p>
 
