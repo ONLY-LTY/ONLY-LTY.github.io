@@ -109,7 +109,7 @@
 <p>swing的直觉来源是：如果大量用户同时喜欢两个物品，且这些用户之间的相关性低，那么这两个物品一定是强关联（相似）</p>
 </blockquote>
 <h2 id="传统icf与swing的异同点"><a href="#传统icf与swing的异同点" class="headerlink" title="传统icf与swing的异同点"></a>传统icf与swing的异同点</h2><p>比较传统icf和swing的相似度定义公式，可以看到，两者的共同点是都通过同时喜欢物品$i$和$j$的用户规模来表达相似度，共同喜欢两个物品的用户量越大，物品间的相似度越高。区别是，swing还考虑了用户之间的重合度，不仅希望用户交集的规模大，且要多样性好。<br>用一句话来分别概括传统icf和swing的特点：<br>传统icf：如果同时喜欢两个物品的用户越多，那么这两个物品间的相似度越高。<br>swing：如果同时喜欢两个物品的用户越多，且这些用户之间的重合度越低，那么这两个物品间的相似度越高。</p>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><em><a href="/pdf/swing.pdf">[1]</a></em> Large Scale Product Graph Construction for Recommendation in E-commerce</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><p><em><a href="/pdf/swing.pdf">[1]</a></em> <em style="font-size:14px">Large Scale Product Graph Construction for Recommendation in E-commerce</em></p>
 ]]></content>
       <tags>
         <tag>Recommend</tag>
