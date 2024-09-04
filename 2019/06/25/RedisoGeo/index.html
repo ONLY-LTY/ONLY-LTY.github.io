@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="stylesheet" href="/css/custom.css">
     <meta name="description" content="前段时间自己在做附近直播相关业务，其中有一个核心的点就是检索用户附近的主播，也是主要召回池。针对业务场景的特殊性，最后决定使用Redis的GEO技术来完成这个功能。主要考虑点在于每天在线直播的主播数量是固定的差不多一万这个量级，使用配置好一点的单机Redis单key存储是没问题的。数据操作主要有两个：一是主播开播的时候写入主播Id的经纬度，二是主播关播的时候删除主播Id元素。这样就维护了一个具有位">
 <meta name="keywords" content="Redis">
 <meta property="og:type" content="article">

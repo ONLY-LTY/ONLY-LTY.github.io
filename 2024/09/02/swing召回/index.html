@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="stylesheet" href="/css/custom.css">
     <meta name="description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
 <meta name="keywords" content="Recommend">
 <meta property="og:type" content="article">
@@ -14,7 +15,7 @@
 <meta property="og:site_name" content="LTY&#39;s Blog">
 <meta property="og:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2024-09-03T02:56:58.324Z">
+<meta property="og:updated_time" content="2024-09-04T03:37:49.621Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="swing召回">
 <meta name="twitter:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
@@ -89,6 +90,8 @@
     <br/>
     <span id="actions">
       <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/09/03/Flink执行流程一/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
         
         
         <li><a class="icon" aria-label="Next post" href="/2024/08/30/AB实验基础/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
@@ -173,12 +176,12 @@
 <p>传统item-cf背后的直觉是：如果大量用户同时喜欢两个物品，那么这两个物品之间应该有比较高的关联（相似）</p>
 </blockquote>
 <h2 id="swing算法"><a href="#swing算法" class="headerlink" title="swing算法"></a>swing算法</h2><p>与传统item-cf类似，swing也是用来衡量物品之间的相似度。swing相似度的定义如下：</p>
-<script type="math/tex; mode=display">s(i,j)=\sum_{u \in U_i \bigcap U_j}\sum_{v \in U_i \bigcap U_j}\frac{1}{\alpha+|I_u \bigcap I_v|}</script><ol>
+<script type="math/tex; mode=display">s(i,j)=\sum_{u \in U_i \bigcap U_j}\sum_{v \in U_i \bigcap U_j}\frac{1}{\alpha+|I_u \bigcap I_v|}</script><ul>
 <li>$U_i$表示喜欢物品$i$的用户集合，$U_j$表示喜欢物品$j$的用户集合，$I_u$表示用户$u$喜欢的item集合，$I_v$表示用户$v$喜欢的item集合。</li>
 <li>公式中有两个$\sum$求和符号，表示的是在同时喜欢物品$i$和$j$的用户集合内两两取$pair$，因此分子的1可以理解为表示一个用户$pair(u,v)$。</li>
 <li>分母中的$I_u$和$I_v$交集的用来表示用户$u$和$v$之间的相似度，等于两个用户共同点击的item数量。这个值越高，说明两个用户的重合度越高，就要降低它的贡献度。</li>
 <li>分母中的$\alpha$是一个平滑项，可以避免分母为零，可以取一个较小的正数，例如1。</li>
-</ol>
+</ul>
 <blockquote>
 <p>swing的直觉来源是：如果大量用户同时喜欢两个物品，且这些用户之间的相关性低，那么这两个物品一定是强关联（相似）</p>
 </blockquote>

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="stylesheet" href="/css/custom.css">
+    <meta name="description" content="1.任务的调度与执行关于flink的任务执行架构，官网的这两张图就是最好的说明：  Flink集群启动后，首先会启动一个JobManger和多个的TaskManager。用户的代码会由JobClient提交给JobManager，JobManager再把来自不同用户的任务发给不同的TaskManager去执行，每个TaskManager管理着多个task，task是执行计算的最小结构，TaskMa">
+<meta name="keywords" content="Flink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink执行流程三">
+<meta property="og:url" content="http://lty.com/2024/09/03/Flink执行流程三/index.html">
+<meta property="og:site_name" content="LTY&#39;s Blog">
+<meta property="og:description" content="1.任务的调度与执行关于flink的任务执行架构，官网的这两张图就是最好的说明：  Flink集群启动后，首先会启动一个JobManger和多个的TaskManager。用户的代码会由JobClient提交给JobManager，JobManager再把来自不同用户的任务发给不同的TaskManager去执行，每个TaskManager管理着多个task，task是执行计算的最小结构，TaskMa">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/qiv2wip1rok62ljo0tef3qf0/image_1cafnu1pl1d8c15m219b8vkb2334.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/b7cmjn41b1zp5sco34kgvusn/image_1cclle7ui2j41nf611gs1is18m19.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/6ypu9v09z0mit936uk0mcddi/image_1cafpf21c1jh3s5ap1fisu4v23h.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/tgamd7vw9qcdttvihlmvhie9/image_1cafpko68b3r1lk0dpsnmbj3c3u.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/l0n9ny2y198x0daucmyo0zb4/image_1cafqroarkjkuje1hfi18gor654b.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/d3j6qnbjywjzknu6pb3pou6i/image_1cag7idg4vfj1l871n0l1k0e1f7u4o.png">
+<meta property="og:image" content="http://static.zybuluo.com/bethunebtj/9bemw0us5cocnej8lq4x64rk/image_1cbkaa8r9182i18ct1kfu8g829m9.png">
+<meta property="og:updated_time" content="2024-09-04T02:53:22.701Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flink执行流程三">
+<meta name="twitter:description" content="1.任务的调度与执行关于flink的任务执行架构，官网的这两张图就是最好的说明：  Flink集群启动后，首先会启动一个JobManger和多个的TaskManager。用户的代码会由JobClient提交给JobManager，JobManager再把来自不同用户的任务发给不同的TaskManager去执行，每个TaskManager管理着多个task，task是执行计算的最小结构，TaskMa">
+<meta name="twitter:image" content="http://static.zybuluo.com/bethunebtj/qiv2wip1rok62ljo0tef3qf0/image_1cafnu1pl1d8c15m219b8vkb2334.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Flink执行流程三</title>
+    <!-- async scripts -->
+    <!-- Google Analytics -->
+
+
+    <!-- Umami Analytics -->
+
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+		<script type="text/x-mathjax-config">
+		  MathJax.Hub.Config({
+			tex2jax: {
+			  skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+			  inlineMath: [['$','$']]
+			}
+		  });
+		</script>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+	
+</head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fa-solid fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fa-solid fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Home</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Writing</a></li><!--
+     --><!--
+       --><li><a href="/tags/">Tag</a></li><!--
+     --><!--
+       --><li><a href="/about/">About</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        <li><a class="icon" aria-label="Previous post" href="/2024/09/03/Flink执行流程四/"><i class="fa-solid fa-chevron-left" aria-hidden="true" onmouseover="$('#i-prev').toggle();" onmouseout="$('#i-prev').toggle();"></i></a></li>
+        
+        
+        <li><a class="icon" aria-label="Next post" href="/2024/09/03/Flink执行流程二/"><i class="fa-solid fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" aria-label="Back to top" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Share post" href="#"><i class="fa-solid fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/03/Flink执行流程三/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程三/&text=Flink执行流程三"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程三/&is_video=false&description=Flink执行流程三"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flink执行流程三&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程三/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程三/&name=Flink执行流程三&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程三/&t=Flink执行流程三"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    
+    
+      <div id="toc">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-任务的调度与执行"><span class="toc-number">1.</span> <span class="toc-text">1.任务的调度与执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-计算资源的调度"><span class="toc-number">2.</span> <span class="toc-text">2.计算资源的调度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JobManager执行job"><span class="toc-number">3.</span> <span class="toc-text">3.JobManager执行job</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1JobManager的组件"><span class="toc-number">3.1.</span> <span class="toc-text">3.1JobManager的组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2JobManager的启动过程"><span class="toc-number">3.2.</span> <span class="toc-text">3.2JobManager的启动过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-JobManager启动Task"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 JobManager启动Task</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-TaskManager执行task"><span class="toc-number">4.</span> <span class="toc-text">4.TaskManager执行task</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-TaskManager的基本组件"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 TaskManager的基本组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-TaskManager执行Task"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 TaskManager执行Task</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-生成Task对象"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 生成Task对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-运行Task对象"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 运行Task对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-StreamTask的执行逻辑"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 StreamTask的执行逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-StreamTask与StreamOperator"><span class="toc-number">5.</span> <span class="toc-text">5. StreamTask与StreamOperator</span></a></li></ol>
+      </div>
+    
+  </span>
+</div>
+
+    
+    <div class="content index py4 ">
+        
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle p-name" itemprop="name headline">
+        Flink执行流程三
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author p-author h-card" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-name" itemprop="name">像个孩子壹洋</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2024-09-03T11:59:49.000Z" class="dt-published" itemprop="datePublished">2024-09-03</time>
+        
+      
+    </div>
+
+
+      
+
+      
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/Flink/">Flink</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content e-content" itemprop="articleBody">
+    <h2 id="1-任务的调度与执行"><a href="#1-任务的调度与执行" class="headerlink" title="1.任务的调度与执行"></a>1.任务的调度与执行</h2><p>关于flink的任务执行架构，官网的这两张图就是最好的说明：</p>
+<p><img src="http://static.zybuluo.com/bethunebtj/qiv2wip1rok62ljo0tef3qf0/image_1cafnu1pl1d8c15m219b8vkb2334.png" alt="image_1cafnu1pl1d8c15m219b8vkb2334.png-112.9kB"></p>
+<p>Flink集群启动后，首先会启动一个JobManger和多个的TaskManager。用户的代码会由JobClient提交给JobManager，JobManager再把来自不同用户的任务发给不同的TaskManager去执行，每个TaskManager管理着多个task，task是执行计算的最小结构，TaskManager将心跳和统计信息汇报给JobManager。TaskManager 之间以流的形式进行数据的传输。上述除了task外的三者均为独立的 JVM 进程。<br>要注意的是，TaskManager和job并非一一对应的关系。flink调度的最小单元是task而非TaskManager，也就是说，来自不同job的不同task可能运行于同一个TaskManager的不同线程上。</p>
+<p><img src="http://static.zybuluo.com/bethunebtj/b7cmjn41b1zp5sco34kgvusn/image_1cclle7ui2j41nf611gs1is18m19.png" alt="image_1cclle7ui2j41nf611gs1is18m19.png-127.5kB"></p>
+<p>一个flink任务所有可能的状态如上图所示。图上画的很明白，就不再赘述了。</p>
+<h2 id="2-计算资源的调度"><a href="#2-计算资源的调度" class="headerlink" title="2.计算资源的调度"></a>2.计算资源的调度</h2><p>Task Slot是一个TaskManager内资源分配的最小载体，代表了一个固定大小的资源子集，每个TaskManager会将其所占有的资源平分给它的Slot。<br>通过调整Task Slot的数量，用户可以定义task之间是如何相互隔离的。每个TaskManager有一个Slot，也就意味着每个Task运行在独立的JVM中。每个 TaskManager 有多个Slot的话，也就是说多个Task运行在同一个JVM中。<br>而在同一个JVM进程中的Task，可以共享TCP连接（基于多路复用）和心跳消息，可以减少数据的网络传输，也能共享一些数据结构，一定程度上减少了每个Task的消耗。<br>每个Slot可以接受单个Task，也可以接受多个连续Task组成的Pipeline，如下图所示，FlatMap函数占用一个Task Slot，而key Agg函数和sink函数共用一个Task Slot：</p>
+<p><img src="http://static.zybuluo.com/bethunebtj/6ypu9v09z0mit936uk0mcddi/image_1cafpf21c1jh3s5ap1fisu4v23h.png" alt="image_1cafpf21c1jh3s5ap1fisu4v23h.png-44.7kB"></p>
+<p>为了达到共用Slot的目的，除了可以以chain的方式pipeline算子，我们还可以允许SlotSharingGroup，如下图所示：</p>
+<p><img src="http://static.zybuluo.com/bethunebtj/tgamd7vw9qcdttvihlmvhie9/image_1cafpko68b3r1lk0dpsnmbj3c3u.png" alt="image_1cafpko68b3r1lk0dpsnmbj3c3u.png-61.2kB"></p>
+<p>我们可以把不能被chain成一条的两个操作如flatmap和key&amp;sink放在一个TaskSlot里执行，这样做可以获得以下好处：</p>
+<ul>
+<li>共用slot使得我们不再需要计算每个任务需要的总task数目，直接取最高算子的并行度即可</li>
+<li>对计算资源的利用率更高。例如，通常的轻量级操作map和重量级操作Aggregate不再分别需要一个线程，而是可以在同一个线程内执行，而且对于slot有限的场景，我们可以增大每个task的并行度了。</li>
+</ul>
+<p>接下来我们还是用官网的图来说明flink是如何重用slot的：</p>
+<p><img src="http://static.zybuluo.com/bethunebtj/l0n9ny2y198x0daucmyo0zb4/image_1cafqroarkjkuje1hfi18gor654b.png" alt="image_1cafqroarkjkuje1hfi18gor654b.png-137kB"></p>
+<ol>
+<li>TaskManager1分配一个SharedSlot0</li>
+<li>把source task放入一个SimpleSlot0，再把该slot放入SharedSlot0</li>
+<li>把flatmap task放入一个SimpleSlot1，再把该slot放入SharedSlot0</li>
+<li>因为我们的flatmap task并行度是2，因此不能再放入SharedSlot0，所以向TaskMange21申请了一个新的SharedSlot0</li>
+<li>把第二个flatmap task放进一个新的SimpleSlot，并放进TaskManager2的SharedSlot0</li>
+<li>开始处理key&amp;sink task，因为其并行度也是2，所以先把第一个task放进TaskManager1的SharedSlot</li>
+<li>把第二个key&amp;sink放进TaskManager2的SharedSlot</li>
+</ol>
+<h2 id="3-JobManager执行job"><a href="#3-JobManager执行job" class="headerlink" title="3.JobManager执行job"></a>3.JobManager执行job</h2><p>JobManager负责接收 flink 的作业，调度 task，收集 job 的状态、管理 TaskManagers。被实现为一个 akka actor。</p>
+<h3 id="3-1JobManager的组件"><a href="#3-1JobManager的组件" class="headerlink" title="3.1JobManager的组件"></a>3.1JobManager的组件</h3><ul>
+<li>BlobServer 是一个用来管理二进制大文件的服务，比如保存用户上传的jar文件，该服务会将其写到磁盘上。还有一些相关的类，如BlobCache，用于TaskManager向JobManager下载用户的jar文件</li>
+<li>InstanceManager 用来管理当前存活的TaskManager的组件，记录了TaskManager的心跳信息等</li>
+<li>CompletedCheckpointStore 用于保存已完成的checkpoint相关信息，持久化到内存中或者zookeeper上</li>
+<li>MemoryArchivist 保存了已经提交到flink的作业的相关信息，如JobGraph等</li>
+</ul>
+<h3 id="3-2JobManager的启动过程"><a href="#3-2JobManager的启动过程" class="headerlink" title="3.2JobManager的启动过程"></a>3.2JobManager的启动过程</h3><p>先列出JobManager启动的核心代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">def <span class="title">runJobManager</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">      configuration: Configuration,</span></span></span><br><span class="line"><span class="function"><span class="params">      executionMode: JobManagerMode,</span></span></span><br><span class="line"><span class="function"><span class="params">      listeningAddress: String,</span></span></span><br><span class="line"><span class="function"><span class="params">      listeningPort: Int)</span></span></span><br><span class="line"><span class="function">    : Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">    val numberProcessors = Hardware.getNumberCPUCores()</span><br><span class="line"></span><br><span class="line">    val futureExecutor = Executors.newScheduledThreadPool(</span><br><span class="line">      numberProcessors,</span><br><span class="line">      <span class="keyword">new</span> ExecutorThreadFactory(<span class="string">"jobmanager-future"</span>))</span><br><span class="line"></span><br><span class="line">    val ioExecutor = Executors.newFixedThreadPool(</span><br><span class="line">      numberProcessors,</span><br><span class="line">      <span class="keyword">new</span> ExecutorThreadFactory(<span class="string">"jobmanager-io"</span>))</span><br><span class="line"></span><br><span class="line">    val timeout = AkkaUtils.getTimeout(configuration)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// we have to first start the JobManager ActorSystem because this determines the port if 0</span></span><br><span class="line">    <span class="comment">// was chosen before. The method startActorSystem will update the configuration correspondingly.</span></span><br><span class="line">    val jobManagerSystem = startActorSystem(</span><br><span class="line">      configuration,</span><br><span class="line">      listeningAddress,</span><br><span class="line">      listeningPort)</span><br><span class="line"></span><br><span class="line">    val highAvailabilityServices = HighAvailabilityServicesUtils.createHighAvailabilityServices(</span><br><span class="line">      configuration,</span><br><span class="line">      ioExecutor,</span><br><span class="line">      AddressResolution.NO_ADDRESS_RESOLUTION)</span><br><span class="line"></span><br><span class="line">    val metricRegistry = <span class="keyword">new</span> MetricRegistryImpl(</span><br><span class="line">      MetricRegistryConfiguration.fromConfiguration(configuration))</span><br><span class="line"></span><br><span class="line">    metricRegistry.startQueryService(jobManagerSystem, <span class="keyword">null</span>)</span><br><span class="line"></span><br><span class="line">    val (_, _, webMonitorOption, _) = <span class="keyword">try</span> &#123;</span><br><span class="line">      startJobManagerActors(</span><br><span class="line">        jobManagerSystem,</span><br><span class="line">        configuration,</span><br><span class="line">        executionMode,</span><br><span class="line">        listeningAddress,</span><br><span class="line">        futureExecutor,</span><br><span class="line">        ioExecutor,</span><br><span class="line">        highAvailabilityServices,</span><br><span class="line">        metricRegistry,</span><br><span class="line">        classOf[JobManager],</span><br><span class="line">        classOf[MemoryArchivist],</span><br><span class="line">        Option(classOf[StandaloneResourceManager])</span><br><span class="line">      )</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">      <span class="keyword">case</span> t: Throwable =&gt;</span><br><span class="line">        futureExecutor.shutdownNow()</span><br><span class="line">        ioExecutor.shutdownNow()</span><br><span class="line"></span><br><span class="line">        <span class="keyword">throw</span> t</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// block until everything is shut down</span></span><br><span class="line">    jobManagerSystem.awaitTermination()</span><br><span class="line"></span><br><span class="line">    .......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码主要做了以下事情：</p>
+<ul>
+<li>配置Akka并生成ActorSystem，启动JobManager</li>
+<li>启动HA和metric相关服务</li>
+<li>在<em>startJobManagerActors()</em>方法中启动JobManagerActors，以及webserver，TaskManagerActor，ResourceManager等等</li>
+<li>阻塞等待终止</li>
+<li>集群通过LeaderService等选出JobManager的leader</li>
+</ul>
+<h3 id="3-3-JobManager启动Task"><a href="#3-3-JobManager启动Task" class="headerlink" title="3.3 JobManager启动Task"></a>3.3 JobManager启动Task</h3><p>JobManager 是一个Actor，通过各种消息来完成核心逻辑：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">override def handleMessage: Receive = &#123;</span><br><span class="line">  <span class="function"><span class="keyword">case</span> <span class="title">GrantLeadership</span><span class="params">(newLeaderSessionID)</span> </span>=&gt;</span><br><span class="line">    log.info(s<span class="string">"JobManager $getAddress was granted leadership with leader session ID "</span> +</span><br><span class="line">      s<span class="string">"$newLeaderSessionID."</span>)</span><br><span class="line">    leaderSessionID = newLeaderSessionID</span><br><span class="line"></span><br><span class="line">    .......</span><br></pre></td></tr></table></figure>
+<p>有几个比较重要的消息：</p>
+<ul>
+<li>GrantLeadership 获得leader授权，将自身被分发到的 session id 写到 zookeeper，并恢复所有的 jobs</li>
+<li>RevokeLeadership 剥夺leader授权，打断清空所有的 job 信息，但是保留作业缓存，注销所有的 TaskManagers</li>
+<li>RegisterTaskManagers 注册 TaskManager，如果之前已经注册过，则只给对应的 Instance 发送消息，否则启动注册逻辑：在 InstanceManager 中注册该 Instance 的信息，并停止 Instance BlobLibraryCacheManager 的端口【供下载 lib 包用】，同时使用 watch 监听 task manager 的存活</li>
+<li>SubmitJob 提交 jobGraph</li>
+</ul>
+<p>最后一项SubmintJob就是我们要关注的，从客户端收到JobGraph，转换为ExecutionGraph并执行的过程。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> def <span class="title">submitJob</span><span class="params">(jobGraph: JobGraph, jobInfo: JobInfo, isRecovery: Boolean = <span class="keyword">false</span>)</span>: Unit </span>= &#123;</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    executionGraph = ExecutionGraphBuilder.buildGraph(</span><br><span class="line">          executionGraph,</span><br><span class="line">          jobGraph,</span><br><span class="line">          flinkConfiguration,</span><br><span class="line">          futureExecutor,</span><br><span class="line">          ioExecutor,</span><br><span class="line">          scheduler,</span><br><span class="line">          userCodeLoader,</span><br><span class="line">          checkpointRecoveryFactory,</span><br><span class="line">          Time.of(timeout.length, timeout.unit),</span><br><span class="line">          restartStrategy,</span><br><span class="line">          jobMetrics,</span><br><span class="line">          numSlots,</span><br><span class="line">          blobServer,</span><br><span class="line">          log.logger)</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (leaderElectionService.hasLeadership) &#123;</span><br><span class="line">            log.info(s<span class="string">"Scheduling job $jobId ($jobName)."</span>)</span><br><span class="line"></span><br><span class="line">            executionGraph.scheduleForExecution()</span><br><span class="line"></span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            self ! decorateMessage(RemoveJob(jobId, removeJobFromStateBackend = <span class="keyword">false</span>))</span><br><span class="line"></span><br><span class="line">            log.warn(s<span class="string">"Submitted job $jobId, but not leader. The other leader needs to recover "</span> +</span><br><span class="line">              <span class="string">"this. I am not scheduling the job for execution."</span>)</span><br><span class="line"></span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先做一些准备工作，然后获取一个ExecutionGraph，判断是否是恢复的job，然后将job保存下来，并且通知客户端本地已经提交成功了，最后如果确认本JobManager是leader，则执行<em>executionGraph.scheduleForExecution()</em>方法，这个方法经过一系列调用，把每个ExecutionVertex传递给了Excution类的deploy方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deploy</span><span class="params">()</span> <span class="keyword">throws</span> JobException </span>&#123;</span><br><span class="line"></span><br><span class="line">        ......</span><br><span class="line"></span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// good, we are allowed to deploy</span></span><br><span class="line">			<span class="keyword">if</span> (!slot.setExecutedVertex(<span class="keyword">this</span>)) &#123;</span><br><span class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> JobException(<span class="string">"Could not assign the ExecutionVertex to the slot "</span> + slot);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// race double check, did we fail/cancel and do we need to release the slot?</span></span><br><span class="line">			<span class="keyword">if</span> (<span class="keyword">this</span>.state != DEPLOYING) &#123;</span><br><span class="line">				slot.releaseSlot();</span><br><span class="line">				<span class="keyword">return</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (LOG.isInfoEnabled()) &#123;</span><br><span class="line">				LOG.info(String.format(<span class="string">"Deploying %s (attempt #%d) to %s"</span>, vertex.getTaskNameWithSubtaskIndex(),</span><br><span class="line">						attemptNumber, getAssignedResourceLocation().getHostname()));</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">final</span> TaskDeploymentDescriptor deployment = vertex.createDeploymentDescriptor(</span><br><span class="line">				attemptId,</span><br><span class="line">				slot,</span><br><span class="line">				taskState,</span><br><span class="line">				attemptNumber);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">final</span> TaskManagerGateway taskManagerGateway = slot.getTaskManagerGateway();</span><br><span class="line"></span><br><span class="line">			<span class="keyword">final</span> CompletableFuture&lt;Acknowledge&gt; submitResultFuture = taskManagerGateway.submitTask(deployment, timeout);</span><br><span class="line"></span><br><span class="line">            ......</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">			markFailed(t);</span><br><span class="line">			ExceptionUtils.rethrow(t);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>我们首先生成了一个TaskDeploymentDescriptor，然后交给了<em>taskManagerGateway.submitTask()</em>方法执行。接下来的部分，就属于TaskManager的范畴了</p>
+<h2 id="4-TaskManager执行task"><a href="#4-TaskManager执行task" class="headerlink" title="4.TaskManager执行task"></a>4.TaskManager执行task</h2><h3 id="4-1-TaskManager的基本组件"><a href="#4-1-TaskManager的基本组件" class="headerlink" title="4.1 TaskManager的基本组件"></a>4.1 TaskManager的基本组件</h3><p>TaskManager是flink中资源管理的基本组件，是所有执行任务的基本容器，提供了内存管理、IO管理、通信管理等一系列功能，本节对各个模块进行简要介绍。</p>
+<ol>
+<li>MemoryManager flink并没有把所有内存的管理都委托给JVM，因为JVM普遍存在着存储对象密度低、大内存时GC对系统影响大等问题。所以flink自己抽象了一套内存管理机制，将所有对象序列化后放在自己的MemorySegment上进行管理。MemoryManger涉及内容较多，将在后续章节进行继续剖析。</li>
+<li>IOManager flink通过IOManager管理磁盘IO的过程，提供了同步和异步两种写模式，又进一步区分了block、buffer和bulk三种读写方式。<br>IOManager提供了两种方式枚举磁盘文件，一种是直接遍历文件夹下所有文件，另一种是计数器方式，对每个文件名以递增顺序访问。<br>在底层，flink将文件IO抽象为FileIOChannle，封装了底层实现。<br><img src="http://static.zybuluo.com/bethunebtj/d3j6qnbjywjzknu6pb3pou6i/image_1cag7idg4vfj1l871n0l1k0e1f7u4o.png" alt="image_1cag7idg4vfj1l871n0l1k0e1f7u4o.png-194.1kB"><br>可以看到，flink在底层实际上都是以异步的方式进行读写。</li>
+<li>NetworkEnvironment 是TaskManager的网络 IO 组件，包含了追踪中间结果和数据交换的数据结构。它的构造器会统一将配置的内存先分配出来，抽象成 NetworkBufferPool 统一管理内存的申请和释放。意思是说，在输入和输出数据时，不管是保留在本地内存，等待chain在一起的下个操作符进行处理，还是通过网络把本操作符的计算结果发送出去，都被抽象成了NetworkBufferPool。后续我们还将对这个组件进行详细分析。</li>
+</ol>
+<h3 id="4-2-TaskManager执行Task"><a href="#4-2-TaskManager执行Task" class="headerlink" title="4.2 TaskManager执行Task"></a>4.2 TaskManager执行Task</h3><p>对于TM来说，执行task就是把收到的<em>TaskDeploymentDescriptor</em>对象转换成一个task并执行的过程。TaskDeploymentDescriptor这个类保存了task执行所必须的所有内容，例如序列化的算子，输入的InputGate和输出的ResultPartition的定义，该task要作为几个subtask执行等等。<br>按照正常逻辑思维，很容易想到TM的submitTask方法的行为：首先是确认资源，如寻找JobManager和Blob，而后建立连接，解序列化算子，收集task相关信息，接下来就是创建一个新的Task对象，这个Task对象就是真正执行任务的关键所在。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">val task = <span class="keyword">new</span> Task(</span><br><span class="line">        jobInformation,</span><br><span class="line">        taskInformation,</span><br><span class="line">        tdd.getExecutionAttemptId,</span><br><span class="line">        tdd.getAllocationId,</span><br><span class="line">        tdd.getSubtaskIndex,</span><br><span class="line">        tdd.getAttemptNumber,</span><br><span class="line">        tdd.getProducedPartitions,</span><br><span class="line">        tdd.getInputGates,</span><br><span class="line">        tdd.getTargetSlotNumber,</span><br><span class="line">        tdd.getTaskStateHandles,</span><br><span class="line">        memoryManager,</span><br><span class="line">        ioManager,</span><br><span class="line">        network,</span><br><span class="line">        bcVarManager,</span><br><span class="line">        taskManagerConnection,</span><br><span class="line">        inputSplitProvider,</span><br><span class="line">        checkpointResponder,</span><br><span class="line">        blobCache,</span><br><span class="line">        libCache,</span><br><span class="line">        fileCache,</span><br><span class="line">        config,</span><br><span class="line">        taskMetricGroup,</span><br><span class="line">        resultPartitionConsumableNotifier,</span><br><span class="line">        partitionStateChecker,</span><br><span class="line">        context.dispatcher)</span><br></pre></td></tr></table></figure>
+<p>如果读者是从头开始看这篇blog，里面有很多对象应该已经比较明确其作用了（除了那个brVarManager，这个是管理广播变量的，广播变量是一类会被分发到每个任务中的共享变量）。接下来的主要任务，就是把这个task启动起来,然后报告说已经启动task了：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// all good, we kick off the task, which performs its own initialization</span></span><br><span class="line">task.startTaskThread()</span><br><span class="line"></span><br><span class="line">sender ! decorateMessage(Acknowledge.get())</span><br></pre></td></tr></table></figure>
+<h3 id="4-3-生成Task对象"><a href="#4-3-生成Task对象" class="headerlink" title="4.3 生成Task对象"></a>4.3 生成Task对象</h3><p>在执行new Task()方法时，第一步是把构造函数里的这些变量赋值给当前task的fields。<br>接下来是初始化ResultPartition和InputGate。这两个类描述了task的输出数据和输入数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (ResultPartitionDeploymentDescriptor desc: resultPartitionDeploymentDescriptors) &#123;</span><br><span class="line">	ResultPartitionID partitionId = <span class="keyword">new</span> ResultPartitionID(desc.getPartitionId(), executionId);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">this</span>.producedPartitions[counter] = <span class="keyword">new</span> ResultPartition(</span><br><span class="line">	    taskNameWithSubtaskAndId,</span><br><span class="line">		<span class="keyword">this</span>,</span><br><span class="line">		jobId,</span><br><span class="line">		partitionId,</span><br><span class="line">		desc.getPartitionType(),</span><br><span class="line">		desc.getNumberOfSubpartitions(),</span><br><span class="line">		desc.getMaxParallelism(),</span><br><span class="line">		networkEnvironment.getResultPartitionManager(),</span><br><span class="line">		resultPartitionConsumableNotifier,</span><br><span class="line">		ioManager,</span><br><span class="line">		desc.sendScheduleOrUpdateConsumersMessage());		</span><br><span class="line">	<span class="comment">//为每个partition初始化对应的writer</span></span><br><span class="line">	writers[counter] = <span class="keyword">new</span> ResultPartitionWriter(producedPartitions[counter]);</span><br><span class="line"></span><br><span class="line">	++counter;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Consumed intermediate result partitions</span></span><br><span class="line"><span class="keyword">this</span>.inputGates = <span class="keyword">new</span> SingleInputGate[inputGateDeploymentDescriptors.size()];</span><br><span class="line"><span class="keyword">this</span>.inputGatesById = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line">counter = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (InputGateDeploymentDescriptor inputGateDeploymentDescriptor: inputGateDeploymentDescriptors) &#123;</span><br><span class="line">	SingleInputGate gate = SingleInputGate.create(</span><br><span class="line">		taskNameWithSubtaskAndId,</span><br><span class="line">		jobId,</span><br><span class="line">		executionId,</span><br><span class="line">		inputGateDeploymentDescriptor,</span><br><span class="line">		networkEnvironment,</span><br><span class="line">		<span class="keyword">this</span>,</span><br><span class="line">		metricGroup.getIOMetricGroup());</span><br><span class="line"></span><br><span class="line">	inputGates[counter] = gate;</span><br><span class="line">	inputGatesById.put(gate.getConsumedResultId(), gate);</span><br><span class="line"></span><br><span class="line">	++counter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，创建一个Thread对象，并把自己放进该对象，这样在执行时，自己就有了自身的线程的引用。</p>
+<h3 id="4-4-运行Task对象"><a href="#4-4-运行Task对象" class="headerlink" title="4.4 运行Task对象"></a>4.4 运行Task对象</h3><p>Task对象本身就是一个Runable，因此在其run方法里定义了运行逻辑。第一步是切换Task的状态：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">      <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">	ExecutionState current = <span class="keyword">this</span>.executionState;</span><br><span class="line">	<span class="comment">////如果当前的执行状态为CREATED，则将其设置为DEPLOYING状态</span></span><br><span class="line">	<span class="keyword">if</span> (current == ExecutionState.CREATED) &#123;</span><br><span class="line">		<span class="keyword">if</span> (transitionState(ExecutionState.CREATED, ExecutionState.DEPLOYING)) &#123;</span><br><span class="line">			<span class="comment">// success, we can start our work</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果当前执行状态为FAILED，则发出通知并退出run方法</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (current == ExecutionState.FAILED) &#123;</span><br><span class="line">		<span class="comment">// we were immediately failed. tell the TaskManager that we reached our final state</span></span><br><span class="line">		notifyFinalState();</span><br><span class="line">		<span class="keyword">if</span> (metrics != <span class="keyword">null</span>) &#123;</span><br><span class="line">			metrics.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//如果当前执行状态为CANCELING，则将其修改为CANCELED状态，并退出run</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (current == ExecutionState.CANCELING) &#123;</span><br><span class="line">		<span class="keyword">if</span> (transitionState(ExecutionState.CANCELING, ExecutionState.CANCELED)) &#123;</span><br><span class="line">			<span class="comment">// we were immediately canceled. tell the TaskManager that we reached our final state</span></span><br><span class="line">			notifyFinalState();</span><br><span class="line">			<span class="keyword">if</span> (metrics != <span class="keyword">null</span>) &#123;</span><br><span class="line">				metrics.close();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//否则说明发生了异常</span></span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (metrics != <span class="keyword">null</span>) &#123;</span><br><span class="line">			metrics.close();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Invalid state for beginning of operation of task "</span> + <span class="keyword">this</span> + <span class="string">'.'</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实这里有个值得关注的点，就是flink里大量使用了这种while(true)的写法来修改和检测状态，emmm…<br>接下来，就是导入用户类加载器并加载用户代码。<br>然后，是向网络管理器注册当前任务（flink的各个算子在运行时进行数据交换需要依赖网络管理器），分配一些缓存以保存数据<br>然后，读入指定的缓存文件。<br>然后，再把task创建时传入的那一大堆变量用于创建一个执行环境Envrionment。<br>再然后，对于那些并不是第一次执行的task（比如失败后重启的）要恢复其状态。<br>接下来最重要方法的是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">invokable.invoke();</span><br></pre></td></tr></table></figure>
+<p>为什么这么说呢，因为这个方法就是用户代码所真正被执行的入口。比如我们写的什么new MapFunction()的逻辑，最终就是在这里被执行的。这里说一下这个invokable，这是一个抽象类，提供了可以被TaskManager执行的对象的基本抽象。<br>这个invokable是在解析JobGraph的时候生成相关信息的，并在此处形成真正可执行的对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// now load the task's invokable code</span></span><br><span class="line"><span class="comment">//通过反射生成对象</span></span><br><span class="line">invokable = loadAndInstantiateInvokable(userCodeClassLoader, nameOfInvokableClass);</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.zybuluo.com/bethunebtj/9bemw0us5cocnej8lq4x64rk/image_1cbkaa8r9182i18ct1kfu8g829m9.png" alt="image_1cbkaa8r9182i18ct1kfu8g829m9.png-29.9kB"></p>
+<p>上图显示了flink提供的可被执行的Task类型。从名字上就可以看出各个task的作用，在此不再赘述。<br>接下来就是invoke方法了，因为我们的wordcount例子用了流式api，在此我们以StreamTask的invoke方法为例进行说明。</p>
+<h3 id="4-5-StreamTask的执行逻辑"><a href="#4-5-StreamTask的执行逻辑" class="headerlink" title="4.5 StreamTask的执行逻辑"></a>4.5 StreamTask的执行逻辑</h3><p>先上部分核心代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">invoke</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">boolean</span> disposed = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">// -------- Initialize ---------</span></span><br><span class="line">			<span class="comment">//先做一些赋值操作</span></span><br><span class="line">            ......</span><br><span class="line"></span><br><span class="line">	<span class="comment">// if the clock is not already set, then assign a default TimeServiceProvider</span></span><br><span class="line">	<span class="comment">//处理timer</span></span><br><span class="line">	<span class="keyword">if</span> (timerService == <span class="keyword">null</span>) &#123;</span><br><span class="line">		ThreadFactory timerThreadFactory =</span><br><span class="line">			<span class="keyword">new</span> DispatcherThreadFactory(TRIGGER_THREAD_GROUP, <span class="string">"Time Trigger for "</span> + getName());</span><br><span class="line"></span><br><span class="line">		timerService = <span class="keyword">new</span> SystemProcessingTimeService(<span class="keyword">this</span>, getCheckpointLock(), timerThreadFactory);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//把之前JobGraph串起来的chain的信息形成实现</span></span><br><span class="line">	operatorChain = <span class="keyword">new</span> OperatorChain&lt;&gt;(<span class="keyword">this</span>);</span><br><span class="line">	headOperator = operatorChain.getHeadOperator();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// task specific initialization</span></span><br><span class="line">	<span class="comment">//这个init操作的起名非常诡异，因为这里主要是处理算子采用了自定义的checkpoint检查机制的情况，但是起了一个非常大众脸的名字</span></span><br><span class="line">	init();</span><br><span class="line"></span><br><span class="line">	<span class="comment">// save the work of reloading state, etc, if the task is already canceled</span></span><br><span class="line">	<span class="keyword">if</span> (canceled) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> CancelTaskException();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// -------- Invoke --------</span></span><br><span class="line">	LOG.debug(<span class="string">"Invoking &#123;&#125;"</span>, getName());</span><br><span class="line"></span><br><span class="line">	<span class="comment">// we need to make sure that any triggers scheduled in open() cannot be</span></span><br><span class="line">	<span class="comment">// executed before all operators are opened</span></span><br><span class="line">	<span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line"></span><br><span class="line">		<span class="comment">// both the following operations are protected by the lock</span></span><br><span class="line">		<span class="comment">// so that we avoid race conditions in the case that initializeState()</span></span><br><span class="line">		<span class="comment">// registers a timer, that fires before the open() is called.</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//初始化操作符状态，主要是一些state啥的</span></span><br><span class="line">		initializeState();</span><br><span class="line">		<span class="comment">//对于富操作符，执行其open操作</span></span><br><span class="line">		openAllOperators();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// final check to exit early before starting to run</span></span><br><span class="line">	f (canceled) &#123;</span><br><span class="line">	    <span class="keyword">throw</span> <span class="keyword">new</span> CancelTaskException();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// let the task do its work</span></span><br><span class="line">	<span class="comment">//真正开始执行的代码</span></span><br><span class="line">	isRunning = <span class="keyword">true</span>;</span><br><span class="line">	run();</span><br></pre></td></tr></table></figure>
+<p>StreamTask.invoke()方法里，第一个值得一说的是<em>TimerService</em>。Flink在2015年决定向StreamTask类加入timer service的时候解释到：</p>
+<blockquote>
+<p>This integrates the timer as a service in StreamTask that StreamOperators can use by calling a method on the StreamingRuntimeContext. This also ensures that the timer callbacks can not be called concurrently with other methods on the StreamOperator. This behaviour is ensured by an ITCase.</p>
+</blockquote>
+<p>第二个要注意的是chain操作。前面提到了，flink会出于优化的角度，把一些算子chain成一个整体的算子作为一个task来执行。比如wordcount例子中，Source和FlatMap算子就被chain在了一起。在进行chain操作的时候，会设定头节点，并且指定输出的RecordWriter。</p>
+<p>接下来不出所料仍然是初始化，只不过初始化的对象变成了各个operator。如果是有checkpoint的，那就从state信息里恢复，不然就作为全新的算子处理。从源码中可以看到，flink针对keyed算子和普通算子做了不同的处理。keyed算子在初始化时需要计算出一个group区间，这个区间的值在整个生命周期里都不会再变化，后面key就会根据hash的不同结果，分配到特定的group中去计算。顺便提一句，flink的keyed算子保存的是对每个数据的key的计算方法，而非真实的key，用户需要自己保证对每一行数据提供的keySelector的幂等性。至于为什么要用KeyGroup的设计，这就牵扯到扩容的范畴了，将在后面的章节进行讲述。</p>
+<p>对于<em>openAllOperators()</em>方法，就是对各种RichOperator执行其open方法，通常可用于在执行计算之前加载资源。<br>最后，run方法千呼万唤始出来，该方法经过一系列跳转，最终调用chain上的第一个算子的run方法。在wordcount的例子中，它最终调用了SocketTextStreamFunction的run，建立socket连接并读入文本。</p>
+<h2 id="5-StreamTask与StreamOperator"><a href="#5-StreamTask与StreamOperator" class="headerlink" title="5. StreamTask与StreamOperator"></a>5. StreamTask与StreamOperator</h2><p>前面提到，Task对象在执行过程中，把执行的任务交给了StreamTask这个类去执行。在我们的wordcount例子中，实际初始化的是OneInputStreamTask的对象（参考上面的类图）。那么这个对象是如何执行用户的代码的呢？</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="comment">// cache processor reference on the stack, to make the code more JIT friendly</span></span><br><span class="line">	<span class="keyword">final</span> StreamInputProcessor&lt;IN&gt; inputProcessor = <span class="keyword">this</span>.inputProcessor;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (running &amp;&amp; inputProcessor.processInput()) &#123;</span><br><span class="line">		<span class="comment">// all the work happens in the "processInput" method</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它做的，就是把任务直接交给了InputProcessor去执行processInput方法。这是一个<em>StreamInputProcessor</em>的实例，该processor的任务就是处理输入的数据，包括用户数据、watermark和checkpoint数据等。我们先来看看这个processor是如何产生的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	StreamConfig configuration = getConfiguration();</span><br><span class="line"></span><br><span class="line">	TypeSerializer&lt;IN&gt; inSerializer = configuration.getTypeSerializerIn1(getUserCodeClassLoader());</span><br><span class="line">	<span class="keyword">int</span> numberOfInputs = configuration.getNumberOfInputs();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (numberOfInputs &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		InputGate[] inputGates = getEnvironment().getAllInputGates();</span><br><span class="line"></span><br><span class="line">		inputProcessor = <span class="keyword">new</span> StreamInputProcessor&lt;&gt;(</span><br><span class="line">				inputGates,</span><br><span class="line">				inSerializer,</span><br><span class="line">				<span class="keyword">this</span>,</span><br><span class="line">				configuration.getCheckpointMode(),</span><br><span class="line">				getCheckpointLock(),</span><br><span class="line">				getEnvironment().getIOManager(),</span><br><span class="line">				getEnvironment().getTaskManagerInfo().getConfiguration(),</span><br><span class="line">				getStreamStatusMaintainer(),</span><br><span class="line">				<span class="keyword">this</span>.headOperator);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// make sure that stream tasks report their I/O statistics</span></span><br><span class="line">		inputProcessor.setMetricGroup(getEnvironment().getMetricGroup().getIOMetricGroup());</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这是OneInputStreamTask的init方法，从configs里面获取StreamOperator信息，生成自己的inputProcessor。那么inputProcessor是如何处理数据的呢？我们接着跟进源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">processInput</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (isFinished) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (numRecordsIn == <span class="keyword">null</span>) &#123;</span><br><span class="line">		numRecordsIn = ((OperatorMetricGroup) streamOperator.getMetricGroup()).getIOMetricGroup().getNumRecordsInCounter();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">      <span class="comment">//这个while是用来处理单个元素的（不要想当然以为是循环处理元素的）</span></span><br><span class="line">	<span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">	    <span class="comment">//注意 1在下面</span></span><br><span class="line">	    <span class="comment">//2.接下来，会利用这个反序列化器得到下一个数据记录，并进行解析（是用户数据还是watermark等等），然后进行对应的操作</span></span><br><span class="line">		<span class="keyword">if</span> (currentRecordDeserializer != <span class="keyword">null</span>) &#123;</span><br><span class="line">			DeserializationResult result = currentRecordDeserializer.getNextRecord(deserializationDelegate);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (result.isBufferConsumed()) &#123;</span><br><span class="line">				currentRecordDeserializer.getCurrentBuffer().recycle();</span><br><span class="line">				currentRecordDeserializer = <span class="keyword">null</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (result.isFullRecord()) &#123;</span><br><span class="line">				StreamElement recordOrMark = deserializationDelegate.getInstance();</span><br><span class="line"></span><br><span class="line">                  <span class="comment">//如果元素是watermark，就准备更新当前channel的watermark值（并不是简单赋值，因为有乱序存在），</span></span><br><span class="line">				<span class="keyword">if</span> (recordOrMark.isWatermark()) &#123;</span><br><span class="line">					<span class="comment">// handle watermark</span></span><br><span class="line">					statusWatermarkValve.inputWatermark(recordOrMark.asWatermark(), currentChannel);</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (recordOrMark.isStreamStatus()) &#123;</span><br><span class="line">				<span class="comment">//如果元素是status，就进行相应处理。可以看作是一个flag，标志着当前stream接下来即将没有元素输入（idle），或者当前即将由空闲状态转为有元素状态（active）。同时，StreamStatus还对如何处理watermark有影响。通过发送status，上游的operator可以很方便的通知下游当前的数据流的状态。</span></span><br><span class="line">					<span class="comment">// handle stream status</span></span><br><span class="line">					statusWatermarkValve.inputStreamStatus(recordOrMark.asStreamStatus(), currentChannel);</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> <span class="keyword">if</span> (recordOrMark.isLatencyMarker()) &#123;</span><br><span class="line">				<span class="comment">//LatencyMarker是用来衡量代码执行时间的。在Source处创建，携带创建时的时间戳，流到Sink时就可以知道经过了多长时间</span></span><br><span class="line">					<span class="comment">// handle latency marker</span></span><br><span class="line">					<span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">						streamOperator.processLatencyMarker(recordOrMark.asLatencyMarker());</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">continue</span>;</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">//这里就是真正的，用户的代码即将被执行的地方。从章节1到这里足足用了三万字，有点万里长征的感觉</span></span><br><span class="line">					<span class="comment">// now we can do the actual processing</span></span><br><span class="line">					StreamRecord&lt;IN&gt; record = recordOrMark.asRecord();</span><br><span class="line">					<span class="keyword">synchronized</span> (lock) &#123;</span><br><span class="line">						numRecordsIn.inc();</span><br><span class="line">						streamOperator.setKeyContextElement1(record);</span><br><span class="line">						streamOperator.processElement(record);</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">          <span class="comment">//1.程序首先获取下一个buffer</span></span><br><span class="line">          <span class="comment">//这一段代码是服务于flink的FaultTorrent机制的，后面我会讲到，这里只需理解到它会尝试获取buffer，然后赋值给当前的反序列化器</span></span><br><span class="line">		<span class="keyword">final</span> BufferOrEvent bufferOrEvent = barrierHandler.getNextNonBlocked();</span><br><span class="line">		<span class="keyword">if</span> (bufferOrEvent != <span class="keyword">null</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (bufferOrEvent.isBuffer()) &#123;</span><br><span class="line">				currentChannel = bufferOrEvent.getChannelIndex();</span><br><span class="line">				currentRecordDeserializer = recordDeserializers[currentChannel];</span><br><span class="line">				currentRecordDeserializer.setNextBuffer(bufferOrEvent.getBuffer());</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="comment">// Event received</span></span><br><span class="line">				<span class="keyword">final</span> AbstractEvent event = bufferOrEvent.getEvent();</span><br><span class="line">				<span class="keyword">if</span> (event.getClass() != EndOfPartitionEvent<span class="class">.<span class="keyword">class</span>) </span>&#123;</span><br><span class="line">					<span class="keyword">throw</span> <span class="keyword">new</span> IOException(<span class="string">"Unexpected event: "</span> + event);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			isFinished = <span class="keyword">true</span>;</span><br><span class="line">			<span class="keyword">if</span> (!barrierHandler.isEmpty()) &#123;</span><br><span class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> IllegalStateException(<span class="string">"Trailing data in checkpoint barrier handler."</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>到此为止，以上部分就是一个flink程序启动后，到执行用户代码之前，flink框架所做的准备工作。回顾一下：</p>
+<ul>
+<li>启动一个环境</li>
+<li>生成StreamGraph</li>
+<li>注册和选举JobManager</li>
+<li>在各节点生成TaskManager，并根据JobGraph生成对应的Task</li>
+<li>启动各个task，准备执行代码</li>
+</ul>
+<p>接下来，我们挑几个Operator看看flink是如何抽象这些算子的。</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives/">Writing</a></li>
+        
+          <li><a href="/tags/">Tag</a></li>
+        
+          <li><a href="/about/">About</a></li>
+        
+      </ul>
+    </div>
+
+    
+    
+      <div id="toc-footer" style="display: none">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-任务的调度与执行"><span class="toc-number">1.</span> <span class="toc-text">1.任务的调度与执行</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-计算资源的调度"><span class="toc-number">2.</span> <span class="toc-text">2.计算资源的调度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-JobManager执行job"><span class="toc-number">3.</span> <span class="toc-text">3.JobManager执行job</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1JobManager的组件"><span class="toc-number">3.1.</span> <span class="toc-text">3.1JobManager的组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2JobManager的启动过程"><span class="toc-number">3.2.</span> <span class="toc-text">3.2JobManager的启动过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-JobManager启动Task"><span class="toc-number">3.3.</span> <span class="toc-text">3.3 JobManager启动Task</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-TaskManager执行task"><span class="toc-number">4.</span> <span class="toc-text">4.TaskManager执行task</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-TaskManager的基本组件"><span class="toc-number">4.1.</span> <span class="toc-text">4.1 TaskManager的基本组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-TaskManager执行Task"><span class="toc-number">4.2.</span> <span class="toc-text">4.2 TaskManager执行Task</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-生成Task对象"><span class="toc-number">4.3.</span> <span class="toc-text">4.3 生成Task对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-运行Task对象"><span class="toc-number">4.4.</span> <span class="toc-text">4.4 运行Task对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-StreamTask的执行逻辑"><span class="toc-number">4.5.</span> <span class="toc-text">4.5 StreamTask的执行逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-StreamTask与StreamOperator"><span class="toc-number">5.</span> <span class="toc-text">5. StreamTask与StreamOperator</span></a></li></ol>
+      </div>
+    
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/03/Flink执行流程三/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程三/&text=Flink执行流程三"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程三/&is_video=false&description=Flink执行流程三"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flink执行流程三&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程三/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程三/&title=Flink执行流程三"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程三/&name=Flink执行流程三&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程三/&t=Flink执行流程三"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fa-solid fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        
+          <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fa-solid fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fa-solid fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fa-solid fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2016-2024
+    像个孩子壹洋
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script>
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script>
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="fa-regular fa-clone"></i>';
+    btn += '</span>';
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments --><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+</body>
+</html>

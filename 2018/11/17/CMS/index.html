@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <link rel="stylesheet" href="/css/custom.css">
     <meta name="description" content="JVM CMS垃圾回收器探索 CMS简介&amp;emsp;CMS垃圾回收器是针对老年代的回收方式、是以牺牲吞吐量为代价来获得最短回收停顿时间的垃圾回收器。对于要求服务器响应速度的应用上，这个方式非常适合。在JVM启动参数上面加上 XX:+UseConcMarkSweepGC 表示老年代使用CMS的方式回收，CMS的回收算法是&amp;ensp;标记-清除 CMS执行过程1.STW initial mark120">
 <meta name="keywords" content="JVM,GC">
 <meta property="og:type" content="article">
