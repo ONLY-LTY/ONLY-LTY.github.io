@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
     <link rel="stylesheet" href="/css/custom.css">
     <meta name="description" content="1.数据流转——Flink的数据抽象及数据交换过程1.1 MemorySegmentFlink作为一个高效的流框架，为了避免JVM的固有缺陷（java对象存储密度低，FGC影响吞吐和响应等），必然走上自主管理内存的道路。 这个MemorySegment就是Flink的内存抽象。默认情况下，一个MemorySegment可以被看做是一个32kb大的内存块的抽象。这块内存既可以是JVM里的一个byte">
+<meta name="keywords" content="Flink">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flink执行流程五">
 <meta property="og:url" content="http://lty.com/2024/09/04/Flink执行流程五/index.html">
@@ -37,7 +38,7 @@
 <meta property="og:image" content="http://lty.com/img/image_1cflafs2o1trgicjmdbndn1bdq3b.png">
 <meta property="og:image" content="http://lty.com/img/image_1cflakoadvjm8pf6nt1k331qj33o.png">
 <meta property="og:image" content="http://lty.com/img/image_1cflambu91ufi5fl1cg9gimdff45.png">
-<meta property="og:updated_time" content="2024-09-04T08:05:06.781Z">
+<meta property="og:updated_time" content="2024-09-04T08:23:12.277Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Flink执行流程五">
 <meta name="twitter:description" content="1.数据流转——Flink的数据抽象及数据交换过程1.1 MemorySegmentFlink作为一个高效的流框架，为了避免JVM的固有缺陷（java对象存储密度低，FGC影响吞吐和响应等），必然走上自主管理内存的道路。 这个MemorySegment就是Flink的内存抽象。默认情况下，一个MemorySegment可以被看做是一个32kb大的内存块的抽象。这块内存既可以是JVM里的一个byte">
@@ -179,6 +180,11 @@
       
 
       
+    <div class="article-tag">
+        <i class="fa-solid fa-tag"></i>
+        <a class="[object Object]-link" href="/tags/Flink/">Flink</a>
+    </div>
+
 
     </div>
   </header>
