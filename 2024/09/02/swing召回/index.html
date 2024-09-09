@@ -10,14 +10,14 @@
     <meta name="description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
 <meta name="keywords" content="Recommend">
 <meta property="og:type" content="article">
-<meta property="og:title" content="swing召回">
+<meta property="og:title" content="Swing召回">
 <meta property="og:url" content="http://lty.com/2024/09/02/swing召回/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
 <meta property="og:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2024-09-04T03:37:49.621Z">
+<meta property="og:updated_time" content="2024-09-09T08:33:49.664Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="swing召回">
+<meta name="twitter:title" content="Swing召回">
 <meta name="twitter:description" content="swing是阿里原创的i2i召回算法（论文具体参考附录[1]），在阿里内部的多个业务场景被验证是一种非常有效的召回方法。swing在工业界已得到比较广泛的使用，抖音，小红书，B站等推荐系统均使用了swing i2i 传统icf算法在介绍swing之前，我们先简单回顾下传统的item-cf是如何计算物品之间的相似度。最经典的item-cf算法基于余弦来计算相似度，下面是传统item-cf对于item">
     
     
@@ -38,7 +38,7 @@
       
     
     <!-- title -->
-    <title>swing召回</title>
+    <title>Swing召回</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -84,6 +84,8 @@
        --><li><a href="/tags/">Tag</a></li><!--
      --><!--
        --><li><a href="/about/">About</a></li><!--
+     --><!--
+       --><li><a href="/search/">Search</a></li><!--
      -->
       </ul>
     </span>
@@ -108,16 +110,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/02/swing召回/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/02/swing召回/&text=swing召回"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/02/swing召回/&is_video=false&description=swing召回"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=swing召回&body=Check out this article: http://lty.com/2024/09/02/swing召回/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/02/swing召回/&name=swing召回&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/02/swing召回/&t=swing召回"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/02/swing召回/&text=Swing召回"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/02/swing召回/&is_video=false&description=Swing召回"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swing召回&body=Check out this article: http://lty.com/2024/09/02/swing召回/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/02/swing召回/&name=Swing召回&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/02/swing召回/&t=Swing召回"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -137,7 +139,7 @@
   <header>
     
     <h1 class="posttitle p-name" itemprop="name headline">
-        swing召回
+        Swing召回
     </h1>
 
 
@@ -208,6 +210,8 @@
         
           <li><a href="/about/">About</a></li>
         
+          <li><a href="/search/">Search</a></li>
+        
       </ul>
     </div>
 
@@ -221,16 +225,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/02/swing召回/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/02/swing召回/&text=swing召回"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/02/swing召回/&is_video=false&description=swing召回"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=swing召回&body=Check out this article: http://lty.com/2024/09/02/swing召回/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=swing召回"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/02/swing召回/&name=swing召回&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/02/swing召回/&t=swing召回"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/02/swing召回/&text=Swing召回"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/02/swing召回/&is_video=false&description=Swing召回"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Swing召回&body=Check out this article: http://lty.com/2024/09/02/swing召回/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/02/swing召回/&title=Swing召回"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/02/swing召回/&name=Swing召回&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/02/swing召回/&t=Swing召回"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>

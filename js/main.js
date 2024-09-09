@@ -55,9 +55,20 @@ $(document).ready(function() {
      * Add a scroll listener to the menu to hide/show the navigation links.
      */
     if (menu.length) {
+      let lastScrollTop = 0; // 上次滚动的位置
       $(window).on("scroll", function() {
         var topDistance = menu.offset().top;
 
+        const st = window.pageYOffset || document.documentElement.scrollTop; // 当前滚动位置
+        // 判断滚动方向
+        if (st > lastScrollTop) { // 向下滚动
+          nav.hide(); // 隐藏菜单
+        } else { // 向上滚动
+          if(st <= 0) { // 如果滚动到顶部或非常接近顶部
+            nav.show(); // 显示菜单
+          }
+        }
+        lastScrollTop = st; // 更新上次滚动位置
         // hide only the navigation links on desktop
         // if (!nav.is(":visible") && topDistance < 50) {
         //   nav.show();
