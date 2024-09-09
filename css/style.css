@@ -399,7 +399,7 @@ body abbr {
 body ul,
 body ol,
 body dl {
-  line-height: 1.725;
+  line-height: 1.5;
 }
 body ul ul,
 body ol ul,
@@ -482,7 +482,7 @@ body {
   font-weight: 400;
   font-size: 15px;
   font-family: "Menlo", "Meslo LG", monospace;
-  line-height: 1.725;
+  line-height: 1.5;
   text-rendering: geometricPrecision;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -771,7 +771,7 @@ body {
 }
 #header-post #menu {
   display: none;
-  margin-right: 2rem;
+  margin-right: 0rem;
 }
 #header-post #nav {
   color: #2bbc8a;
@@ -1416,7 +1416,7 @@ article .content .caption {
   font-weight: 400;
   font-size: 12px;
   font-family: "Menlo", "Meslo LG", monospace;
-  line-height: 1.725;
+  line-height: 1.5;
   text-rendering: geometricPrecision;
   text-align: center;
   word-wrap: break-word;
