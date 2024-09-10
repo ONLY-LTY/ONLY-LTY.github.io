@@ -10,7 +10,7 @@
     <meta name="description" content="前言Flink是大数据处理领域最近很火的一个开源的分布式、高性能的流式处理框架，其对数据的处理可以达到毫秒级别。本文以一个来自官网的WordCount例子为引，全面阐述Flink的核心架构及执行流程，希望读者可以借此更加深入的理解Flink逻辑。本文跳过了一些基本概念，如果对相关概念感到迷惑，请参考官网文档。 1.从WordCount开始首先，我们把WordCount的例子再放一遍： 123456">
 <meta name="keywords" content="Flink">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Flink执行流程一">
+<meta property="og:title" content="Flink Execute Implements (一)">
 <meta property="og:url" content="http://lty.com/2024/09/03/Flink执行流程一/index.html">
 <meta property="og:site_name" content="LTY&#39;s Blog">
 <meta property="og:description" content="前言Flink是大数据处理领域最近很火的一个开源的分布式、高性能的流式处理框架，其对数据的处理可以达到毫秒级别。本文以一个来自官网的WordCount例子为引，全面阐述Flink的核心架构及执行流程，希望读者可以借此更加深入的理解Flink逻辑。本文跳过了一些基本概念，如果对相关概念感到迷惑，请参考官网文档。 1.从WordCount开始首先，我们把WordCount的例子再放一遍： 123456">
@@ -18,9 +18,9 @@
 <meta property="og:image" content="http://lty.com/img/image_1cae39t06eoo3ml1be8o0412c69.png">
 <meta property="og:image" content="http://lty.com/img/image_1cae7g15p6k94no1ves121c5pd9.png">
 <meta property="og:image" content="http://lty.com/img/image_1cenfj3p9fp110p0a8unn1mrh9.png">
-<meta property="og:updated_time" content="2024-09-09T09:17:07.380Z">
+<meta property="og:updated_time" content="2024-09-10T03:08:29.285Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flink执行流程一">
+<meta name="twitter:title" content="Flink Execute Implements (一)">
 <meta name="twitter:description" content="前言Flink是大数据处理领域最近很火的一个开源的分布式、高性能的流式处理框架，其对数据的处理可以达到毫秒级别。本文以一个来自官网的WordCount例子为引，全面阐述Flink的核心架构及执行流程，希望读者可以借此更加深入的理解Flink逻辑。本文跳过了一些基本概念，如果对相关概念感到迷惑，请参考官网文档。 1.从WordCount开始首先，我们把WordCount的例子再放一遍： 123456">
 <meta name="twitter:image" content="http://lty.com/img/image_1cae39t06eoo3ml1be8o0412c69.png">
     
@@ -42,7 +42,7 @@
       
     
     <!-- title -->
-    <title>Flink执行流程一</title>
+    <title>Flink Execute Implements (一)</title>
     <!-- async scripts -->
     <!-- Google Analytics -->
 
@@ -114,16 +114,16 @@
     <div id="share" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/03/Flink执行流程一/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程一/&text=Flink执行流程一"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程一/&is_video=false&description=Flink执行流程一"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Flink执行流程一&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程一/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程一/&name=Flink执行流程一&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程一/&t=Flink执行流程一"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程一/&text=Flink Execute Implements (一)"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程一/&is_video=false&description=Flink Execute Implements (一)"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flink Execute Implements (一)&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程一/"><i class="fa-solid fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程一/&name=Flink Execute Implements (一)&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程一/&t=Flink Execute Implements (一)"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
@@ -143,7 +143,7 @@
   <header>
     
     <h1 class="posttitle p-name" itemprop="name headline">
-        Flink执行流程一
+        Flink Execute Implements (一)
     </h1>
 
 
@@ -264,16 +264,16 @@
     <div id="share-footer" style="display: none">
       <ul>
   <li><a class="icon" href="http://www.facebook.com/sharer.php?u=http://lty.com/2024/09/03/Flink执行流程一/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程一/&text=Flink执行流程一"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程一/&is_video=false&description=Flink执行流程一"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="mailto:?subject=Flink执行流程一&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程一/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink执行流程一"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程一/&name=Flink执行流程一&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
-  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程一/&t=Flink执行流程一"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=http://lty.com/2024/09/03/Flink执行流程一/&text=Flink Execute Implements (一)"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=http://lty.com/2024/09/03/Flink执行流程一/&is_video=false&description=Flink Execute Implements (一)"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Flink Execute Implements (一)&body=Check out this article: http://lty.com/2024/09/03/Flink执行流程一/"><i class="fa-solid fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=http://lty.com/2024/09/03/Flink执行流程一/&title=Flink Execute Implements (一)"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=http://lty.com/2024/09/03/Flink执行流程一/&name=Flink Execute Implements (一)&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=http://lty.com/2024/09/03/Flink执行流程一/&t=Flink Execute Implements (一)"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
 </ul>
 
     </div>
